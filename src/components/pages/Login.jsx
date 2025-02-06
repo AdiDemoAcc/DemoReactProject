@@ -32,13 +32,8 @@ const Login = () => {
 
     const loginSubmitAction = (event) => {
         event.preventDefault();
-        // loginService.loginService(requestObject);
-         fetch(`${backendUrl}/T1000/S1001`,requestObject)
-                .then(response => response.json())
-                .then(async (response) => {
-                    debugger;
-                    console.log(response);
-                })
+        loginService.loginService(requestObject);
+         
     }
 
 
