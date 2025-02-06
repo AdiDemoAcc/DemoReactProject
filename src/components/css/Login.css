@@ -1,0 +1,75 @@
+/* html, body, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+} */
+
+/* body {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+   background: linear-gradient(135deg, #6e8efb, #a777e3);
+    background-size: cover;
+}  */
+/* Full Page Styling */
+#customLoginDashboardContainer {
+    display: flex;
+    justify-content: center;  /* Centers horizontally */
+    align-items: center;  /* Centers vertically */
+    min-height: 100vh;
+    width: 100vw; /* Ensures full width */
+    background-size: cover; /* Ensures full coverage */
+    background-position: center; /* Centers the background */
+}
+
+/* Login Card Styling */
+.custom-login-dashboard-card {
+    width: 400px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px); /* Frosted Glass Effect */
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-out, box-shadow 0.5s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Ensures content is centered */
+}
+
+.custom-login-dashboard-card .custom-login-dashboard-card-header {
+    margin-left: 0%;
+    width: 100%;
+}
+
+/* Card Hover Effect */
+.custom-login-dashboard-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Input Styling */
+.input-group {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 10px;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+}
+
+.input-group:hover {
+    transform: scale(1.02);
+}
+
+/* Input Icons */
+.input-group-text {
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    border: none;
+    transition: 0.3s;
+}
+
+/* Smooth Focus Effect */
+.input-group input:focus {
+    border-color: #6e8efb;
+    box-shadow: 0px 0px 10px rgba(110, 142, 251, 0.5);
+}
