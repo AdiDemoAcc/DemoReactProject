@@ -19,6 +19,7 @@
     align-items: center;  /* Centers vertically */
     min-height: 100vh;
     width: 100vw; /* Ensures full width */
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
     background-size: cover; /* Ensures full coverage */
     background-position: center; /* Centers the background */
 }
@@ -72,4 +73,41 @@
 .input-group input:focus {
     border-color: #6e8efb;
     box-shadow: 0px 0px 10px rgba(110, 142, 251, 0.5);
+}
+
+.custom-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+/* Custom Checkbox Styling */
+.custom-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #6e8efb; /* Matches theme color */
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+/* Custom Label Styling */
+.custom-checkbox-label {
+    font-size: 16px;
+    margin-top: 2%;
+    color: black;
+    user-select: none;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Hover and Focus Effects */
+.custom-checkbox-container:hover .custom-checkbox-label {
+    color: #a777e3;
+}
+
+.custom-checkbox:focus {
+    outline: none;
+    box-shadow: 0px 0px 8px rgba(110, 142, 251, 0.5);
 }

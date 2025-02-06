@@ -4,6 +4,7 @@ import '../css/Login.css';
 import { LockFill, PersonFill } from 'react-bootstrap-icons';
 import LoginService from '../service/LoginService';
 import { backendUrl } from '../service/config';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [login, setLogin] = useState({
@@ -12,28 +13,61 @@ const Login = () => {
         clearSession: true,
     });
 
-    const loginService = new LoginService(); 
+    const loginService = new LoginService();
 
     const handleChange = (event) => {
-        const { name, value , type, checked } = event.target;
+        const { name, value, type, checked } = event.target;
         if (type === 'checkbox') {
-            setLogin((values) => ({...values, [name] : checked}))
+            setLogin((values) => ({ ...values, [name]: checked }))
         } else {
             setLogin((values) => ({ ...values, [name]: value }));
         }
     };
 
+    let navigate = useNavigate();
 
     const requestObject = {
-        method : 'POST',
-        headers : {'Content-Type' : 'application/json'},
-        body : JSON.stringify(login)
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(login)
     }
 
     const loginSubmitAction = (event) => {
         event.preventDefault();
-        loginService.loginService(requestObject);
-         
+        loginService.loginService(requestObject)
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errResponse => {
+                        const { errorMsg, errorCd } = errResponse;
+                        console.error(`Error Message: ${errorMsg}, Error Code: ${errorCd}`);
+                        throw new Error(`HTTP Error! Status: ${response.status}`);
+                    });
+                }
+                return response.json(); 
+            }).then(response => {
+                const { respObject, errorMsg, errorCd } = response;
+                if (errorCd === 'USER_AUTHENTICATED') {
+                    alert('Login Successful')
+                    if (localStorage.getItem('token')) {
+                        localStorage.removeItem('token');
+                    }
+                    localStorage.setItem('token',respObject);
+                    navigate('/dashboard');
+                } else if (errorCd === 'BAD_CREDENTIALS') {
+                    alert(`${errorMsg}`);
+                } else if (errorCd === 'USER_UNAUTHENTICATED') {
+                    alert(`${errorMsg}`);
+                } else if (errorCd === 'LOGIN_FAILED') {
+                    alert(`${errorMsg}`);
+                } else {
+                    alert("Something went wrong. Please try again later!!");
+                    console.error(errorMsg);
+                    console.error(errorCd );    
+                }
+            }).catch(error => {
+                console.error('Login failed:', error);
+            });
+
     }
 
 
@@ -52,15 +86,17 @@ const Login = () => {
                                 </span>
                                 <Form.Control type="text" name="username" value={login.username} onChange={handleChange} placeholder="Username" />
                             </div>
-                            <div className="input-group mb-2">
+                            <div className="input-group mb-3">
                                 <span className="input-group-text text-center">
                                     <LockFill size={20} className="custom-login-dashboard-password-icon" />
                                 </span>
                                 <Form.Control type="password" name="password" value={login.password} onChange={handleChange} placeholder="Password" />
                             </div>
-                            <div className='row input-group ms-1 mb-3'>
-                                <Form.Check className='col-sm-1' type='checkbox' name='clearSession' checked={login.clearSession} onChange={handleChange}/>
-                                <span className='col-sm-auto'>Clear Last Session</span>
+                            <div className='row ms-1 mb-3 d-flex align-items-center'>
+                                <div className="custom-checkbox-container">
+                                    <Form.Check type="checkbox" name="clearSession" checked={login.clearSession} onChange={handleChange} className="custom-checkbox" />
+                                    <label className="custom-checkbox-label">Clear Last Session</label>
+                                </div>
                             </div>
                             <div>
                                 <Button type="submit" variant='outline-success' className='w-100 text-center'> Login</Button>
