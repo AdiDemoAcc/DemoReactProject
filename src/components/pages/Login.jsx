@@ -26,7 +26,7 @@ const Login = () => {
 
     let navigate = useNavigate();
 
-    const requestObject = {
+    const userLoginObject = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(login)
@@ -34,7 +34,11 @@ const Login = () => {
 
     const loginSubmitAction = (event) => {
         event.preventDefault();
-        loginService.loginService(requestObject)
+        if (localStorage.getItem('token') || localStorage.getItem('user')) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+        }
+        loginService.loginService(userLoginObject)
             .then(response => {
                 if (!response.ok) {
                     return response.json().then(errResponse => {
@@ -48,10 +52,10 @@ const Login = () => {
                 const { respObject, errorMsg, errorCd } = response;
                 if (errorCd === 'USER_AUTHENTICATED') {
                     alert('Login Successful')
-                    if (localStorage.getItem('token')) {
-                        localStorage.removeItem('token');
-                    }
-                    localStorage.setItem('token',respObject);
+                    
+                    const {user, token} = respObject;
+                    localStorage.setItem('token',token);
+                    localStorage.setItem('user',JSON.stringify(user));
                     navigate('/dashboard');
                 } else if (errorCd === 'BAD_CREDENTIALS') {
                     alert(`${errorMsg}`);

@@ -1,27 +1,14 @@
-/* html, body, #root {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-} */
-
-/* body {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-   background: linear-gradient(135deg, #6e8efb, #a777e3);
-    background-size: cover;
-}  */
+  
 /* Full Page Styling */
 #customLoginDashboardContainer {
     display: flex;
-    justify-content: center;  /* Centers horizontally */
-    align-items: center;  /* Centers vertically */
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
-    width: 100vw; /* Ensures full width */
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
-    background-size: cover; /* Ensures full coverage */
-    background-position: center; /* Centers the background */
+    width: 100vw; 
+    /* background: linear-gradient(135deg, #6e8efb, #a777e3); */
+    background-size: cover; 
+    background-position: center;
 }
 
 /* Login Card Styling */
