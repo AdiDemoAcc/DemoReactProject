@@ -79,8 +79,8 @@ const Login = () => {
         <Container className="custom-login-dashboard-container" id="customLoginDashboardContainer">
             <Card className="custom-login-dashboard-card">
                 <div className="custom-login-dashboard-card-content">
-                    <Card.Header className="custom-login-dashboard-card-header">
-                        <h1>Login User</h1>
+                    <Card.Header className="custom-login-dashboard-card-header" style={{border: 'none'}}>
+                        <img className='custom-login-logo-image' id='loginLogoImage'></img>
                     </Card.Header>
                     <Card.Body>
                         <Form onSubmit={(e) => loginSubmitAction(e)}>
