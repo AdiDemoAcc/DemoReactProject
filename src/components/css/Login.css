@@ -98,3 +98,11 @@
     outline: none;
     box-shadow: 0px 0px 8px rgba(110, 142, 251, 0.5);
 }
+
+.custom-login-dashboard-card-header {
+    background-image: url('../images/logo.png');
+    background-size: contain; 
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100px; 
+}
