@@ -13,8 +13,6 @@ const Login = () => {
         clearSession: true,
     });
 
-    const loginService = new LoginService();
-
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
         if (type === 'checkbox') {
@@ -26,19 +24,19 @@ const Login = () => {
 
     let navigate = useNavigate();
 
-    const userLoginObject = {
+    /* const userLoginObject = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(login)
-    }
+    } */
 
-    const loginSubmitAction = (event) => {
+    const loginSubmitAction = async (event) => {
         event.preventDefault();
         if (localStorage.getItem('token') || localStorage.getItem('user')) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
         }
-        loginService.loginService(userLoginObject)
+        /* loginService.loginService(login)
             .then(response => {
                 if (!response.ok) {
                     return response.json().then(errResponse => {
@@ -70,7 +68,40 @@ const Login = () => {
                 }
             }).catch(error => {
                 console.error('Login failed:', error);
-            });
+            }); */
+
+        try {
+            const response = await LoginService.loginService(login);
+            const { respObject, errorMsg, errorCd } = response;
+
+            if (errorCd === "USER_AUTHENTICATED") {
+                const user = respObject.user;
+                let roleId =  user.roleId;
+                let token = respObject.token;
+                localStorage.setItem("token", token);
+                localStorage.setItem("user", JSON.stringify(user));
+
+                // console.log("roleId: ",roleId);
+
+                const menuResponse = await LoginService.menuMapService(roleId,token);
+                
+                const {respObject: menuData,errorMsg: menuErrorMsg,errorCd : menuErrorCd} = menuResponse;
+                if (menuErrorCd === "REQUEST_SUCCESS") {
+                    localStorage.setItem("menuItemList",JSON.stringify(menuData.menuItemMstList));
+                    localStorage.setItem("menuList",JSON.stringify(menuData.menuMstList));
+                    navigate("/dashboard");
+                } else {
+                    alert("Something went wrong.");
+                    console.error("Error: ",menuErrorMsg);
+                }
+                
+            } else {
+                alert(errorMsg || "Login Failed");
+            }
+        } catch (error) {
+            alert(error.errorMsg || "Something went wrong");
+            console.error("Login Failed: ",error);
+        }
 
     }
 
@@ -79,7 +110,7 @@ const Login = () => {
         <Container className="custom-login-dashboard-container" id="customLoginDashboardContainer">
             <Card className="custom-login-dashboard-card">
                 <div className="custom-login-dashboard-card-content">
-                    <Card.Header className="custom-login-dashboard-card-header" style={{border: 'none'}}>
+                    <Card.Header className="custom-login-dashboard-card-header" style={{ border: 'none' }}>
                         <img className='custom-login-logo-image' id='loginLogoImage'></img>
                     </Card.Header>
                     <Card.Body>

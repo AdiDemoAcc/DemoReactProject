@@ -1,3 +1,11 @@
-Sidebar {
-    z-index: 500;
+.menu-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #f8f9fa;
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        height: auto;
+        overflow-y: scroll;
+    }
 }
