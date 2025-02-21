@@ -14,7 +14,7 @@ const NewTransaction = () => {
     },[])
 
   return (
-    <div></div>
+    <div>New Transaction Page</div>
   )
 }
 

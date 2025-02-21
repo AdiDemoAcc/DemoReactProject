@@ -3,6 +3,7 @@ import { Accordion, Button, Card } from "react-bootstrap";
 import { BarChartLineFill, CashStack, FileTextFill, HouseFill, Journals, List, PeopleFill, Receipt, Speedometer2 } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import'../css/Sidebar.css'
+import MenuRoutes from "../utils/MenuRoutes";
 
 const Sidebar = ({ isCollapsed }) => {
     const [menuList, setMenuList] = useState([]);
@@ -60,7 +61,7 @@ const Sidebar = ({ isCollapsed }) => {
                                             .map((subMenu) => (
                                                 <Link
                                                     key={subMenu.menuSubId}
-                                                    to={"/dashboard"}
+                                                    to={MenuRoutes[subMenu.menuSubId]}
                                                     style={{
                                                         textDecoration: "none",
                                                         color: "black",

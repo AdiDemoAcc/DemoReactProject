@@ -10,9 +10,17 @@
 }
 
 #customNavbarLogoutButton {
-    background-color: silver;
-    color: red;
-    border: red solid 1px;
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid black !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#customNavbarLogoutButton:hover {
+    background-color: black !important;
+    color: white !important;
+    border: 1px solid white !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
