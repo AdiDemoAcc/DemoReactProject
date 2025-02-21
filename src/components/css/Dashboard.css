@@ -1,0 +1,31 @@
+.dashboard-container {
+    text-align: center;
+    /* background: linear-gradient(to right, #6a11cb, #2575fc); */
+    min-height: 100vh;
+    padding: 20px;
+    color: white;
+  }
+  
+  .dashboard-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .dashboard-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .chart-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 40%;
+    color: black;
+    min-width: 350px;
+  }
+  

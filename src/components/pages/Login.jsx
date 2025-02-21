@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Form, Container, Button } from 'react-bootstrap';
-import '../css/Login.css';
+import '../css/Login2.css';
 import { LockFill, PersonFill } from 'react-bootstrap-icons';
 import LoginService from '../service/LoginService';
-import { backendUrl } from '../service/config';
 import { useNavigate } from 'react-router-dom';
+import logo from "../images/logo.png";
 
 const Login = () => {
     const [login, setLogin] = useState({
@@ -12,6 +12,16 @@ const Login = () => {
         password: '',
         clearSession: true,
     });
+
+    const navigate = useNavigate();
+
+    // Redirect to dashboard if user is already logged in
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            navigate("/dashboard", { replace: true });
+        }
+    }, [navigate]);
 
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
@@ -22,8 +32,6 @@ const Login = () => {
         }
     };
 
-    let navigate = useNavigate();
-
     /* const userLoginObject = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -32,67 +40,42 @@ const Login = () => {
 
     const loginSubmitAction = async (event) => {
         event.preventDefault();
-        if (localStorage.getItem('token') || localStorage.getItem('user')) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-        }
-        /* loginService.loginService(login)
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(errResponse => {
-                        const { errorMsg, errorCd } = errResponse;
-                        console.error(`Error Message: ${errorMsg}, Error Code: ${errorCd}`);
-                        throw new Error(`HTTP Error! Status: ${response.status}`);
-                    });
-                }
-                return response.json(); 
-            }).then(response => {
-                const { respObject, errorMsg, errorCd } = response;
-                if (errorCd === 'USER_AUTHENTICATED') {
-                    alert('Login Successful')
-                    
-                    const {user, token} = respObject;
-                    localStorage.setItem('token',token);
-                    localStorage.setItem('user',JSON.stringify(user));
-                    navigate('/dashboard');
-                } else if (errorCd === 'BAD_CREDENTIALS') {
-                    alert(`${errorMsg}`);
-                } else if (errorCd === 'USER_UNAUTHENTICATED') {
-                    alert(`${errorMsg}`);
-                } else if (errorCd === 'LOGIN_FAILED') {
-                    alert(`${errorMsg}`);
-                } else {
-                    alert("Something went wrong. Please try again later!!");
-                    console.error(errorMsg);
-                    console.error(errorCd );    
-                }
-            }).catch(error => {
-                console.error('Login failed:', error);
-            }); */
+        
+        // Clear old session data
+        // localStorage.removeItem('token');
+        // localStorage.removeItem('user');
+        // localStorage.removeItem("sessionId");
+        // localStorage.removeItem("menuItemList");
+        // localStorage.removeItem("menuList");
 
+        localStorage.clear();
         try {
             const response = await LoginService.loginService(login);
             const { respObject, errorMsg, errorCd } = response;
 
             if (errorCd === "USER_AUTHENTICATED") {
                 const user = respObject.user;
-                let roleId =  user.roleId;
+                let roleId = user.roleId;
                 let token = respObject.token;
+                let sessionId = respObject.sessionId;
+
+                // Store user session data
                 localStorage.setItem("token", token);
                 localStorage.setItem("user", JSON.stringify(user));
+                localStorage.setItem("sessionId",sessionId);
+                const menuResponse = await LoginService.menuMapService(roleId);
+                const { respObject: menuData, errorMsg: menuErrorMsg, errorCd: menuErrorCd } = menuResponse;
+                console.log("Menu Response: ",menuData);
 
-                // console.log("roleId: ",roleId);
-
-                const menuResponse = await LoginService.menuMapService(roleId,token);
-                
-                const {respObject: menuData,errorMsg: menuErrorMsg,errorCd : menuErrorCd} = menuResponse;
                 if (menuErrorCd === "REQUEST_SUCCESS") {
-                    localStorage.setItem("menuItemList",JSON.stringify(menuData.menuItemMstList));
-                    localStorage.setItem("menuList",JSON.stringify(menuData.menuMstList));
+                    localStorage.setItem("menuItemList", JSON.stringify(menuData.menuItemMstList));
+                    localStorage.setItem("menuList", JSON.stringify(menuData.menuMstList));
+
+                    // Redirect to dashboard
                     navigate("/dashboard");
                 } else {
                     alert("Something went wrong.");
-                    console.error("Error: ",menuErrorMsg);
+                    console.error("Error: ", menuErrorMsg);
                 }
                 
             } else {
@@ -100,18 +83,16 @@ const Login = () => {
             }
         } catch (error) {
             alert(error.errorMsg || "Something went wrong");
-            console.error("Login Failed: ",error);
+            console.error("Login Failed: ", error);
         }
-
-    }
-
+    };
 
     return (
         <Container className="custom-login-dashboard-container" id="customLoginDashboardContainer">
             <Card className="custom-login-dashboard-card">
                 <div className="custom-login-dashboard-card-content">
                     <Card.Header className="custom-login-dashboard-card-header" style={{ border: 'none' }}>
-                        <img className='custom-login-logo-image' id='loginLogoImage'></img>
+                        <img src={logo} alt="Ledgerly Logo" className='custom-login-logo-image' id='loginLogoImage'></img>
                     </Card.Header>
                     <Card.Body>
                         <Form onSubmit={(e) => loginSubmitAction(e)}>
@@ -119,13 +100,13 @@ const Login = () => {
                                 <span className="input-group-text text-center">
                                     <PersonFill size={20} className="custom-login-dashboard-username-icon" />
                                 </span>
-                                <Form.Control type="text" name="username" value={login.username} onChange={handleChange} placeholder="Username" />
+                                <Form.Control type="text" name="username" value={login.username} onChange={handleChange} placeholder="Username" required />
                             </div>
                             <div className="input-group mb-3">
                                 <span className="input-group-text text-center">
                                     <LockFill size={20} className="custom-login-dashboard-password-icon" />
                                 </span>
-                                <Form.Control type="password" name="password" value={login.password} onChange={handleChange} placeholder="Password" />
+                                <Form.Control type="password" name="password" value={login.password} onChange={handleChange} placeholder="Password" required />
                             </div>
                             <div className='row ms-1 mb-3 d-flex align-items-center'>
                                 <div className="custom-checkbox-container">
@@ -134,7 +115,7 @@ const Login = () => {
                                 </div>
                             </div>
                             <div>
-                                <Button type="submit" variant='outline-success' className='w-100 text-center'> Login</Button>
+                                <Button type="submit" variant='outline-success' className='w-100 text-center'>Login</Button>
                             </div>
                         </Form>
                     </Card.Body>

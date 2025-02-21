@@ -33,14 +33,14 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-} 
+  overflow: hidden; /* Prevents extra scrollbars */
+}
 
 body {
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
- background: linear-gradient(135deg, #6e8efb, #a777e3);
+  background: linear-gradient(135deg, #6e8efb, #a777e3); 
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 :root {
@@ -48,6 +48,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background: linear-gradient(135deg, #6e8efb, #a777e3); */
 }
 
 a {
@@ -61,8 +62,8 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  /* display: flex;
+  place-items: center; */
   min-width: 320px;
   min-height: 100vh;
 }
