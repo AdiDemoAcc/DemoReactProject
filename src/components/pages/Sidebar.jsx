@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Button, Card } from "react-bootstrap";
 import { BarChartLineFill, CashStack, FileTextFill, HouseFill, Journals, List, PeopleFill, Receipt, Speedometer2 } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
-import'../css/Sidebar.css'
+import { Link, useLocation } from "react-router-dom";
+import '../css/Sidebar.css'
 import MenuRoutes from "../utils/MenuRoutes";
 
-const Sidebar = ({ isCollapsed }) => {
+const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     const [menuList, setMenuList] = useState([]);
     const [menuItemList, setMenuItemList] = useState([]);
 
@@ -23,6 +23,15 @@ const Sidebar = ({ isCollapsed }) => {
         300: <Receipt size={24} />,
         400: <CashStack size={24} />,
         500: <BarChartLineFill size={24} />
+    }
+
+    const onMenuLinkActive = (event) => {
+
+        document.querySelectorAll(".menu-custom-link-button").forEach(elem => {
+            elem.classList.remove("active");
+        });
+        console.log("Clicked element:", event.currentTarget);
+        event.currentTarget.classList.add("active");
     }
 
     return (
@@ -43,7 +52,7 @@ const Sidebar = ({ isCollapsed }) => {
             }}
             className="sidebar"
         >
-            
+
 
             {/* Sidebar Content */}
             {!isCollapsed ? (
@@ -62,6 +71,7 @@ const Sidebar = ({ isCollapsed }) => {
                                                 <Link
                                                     key={subMenu.menuSubId}
                                                     to={MenuRoutes[subMenu.menuSubId]}
+                                                    id={`customLinkButton${subMenu.menuSubId}`}
                                                     style={{
                                                         textDecoration: "none",
                                                         color: "black",
@@ -70,10 +80,11 @@ const Sidebar = ({ isCollapsed }) => {
                                                         borderRadius: "5px",
                                                         border: "1px solid rgba(255,255,255,0.3)",
                                                         marginBottom: "5px",
-                                                        background: "rgba(255,255,255,0.3)",
+                                                        background: location.pathname === MenuRoutes[subMenu.menuSubId] ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.3)", // Active highlight
                                                         transition: "background 0.3s",
                                                     }}
-                                                    className="menu-link"
+                                                    className={`menu-link menu-custom-link-button`}
+                                                    onClick={(e) => onMenuLinkActive(e)}
                                                 >
                                                     {subMenu.menuSubName}
                                                 </Link>
@@ -99,9 +110,9 @@ const Sidebar = ({ isCollapsed }) => {
                                 className="mb-3"
                                 onClick={() => setIsCollapsed(!isCollapsed)}
                             >
-                            {menuIcons[menu.menuId]}
+                                {menuIcons[menu.menuId]}
                             </Button>
-                            <br/>
+                            <br />
                         </div>
                     ))}
                     {/* <Button
