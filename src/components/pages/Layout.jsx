@@ -13,7 +13,7 @@ const Layout = () => {
         <div style={{ marginLeft: '0px', width: '100%' }}>
             <AppNavbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
             <div style={{ display: 'flex' }}>
-                <Sidebar isCollapsed={isCollapsed}/>
+                <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed}/>
                 <div style={{
                     marginLeft: isCollapsed ? '80px' : '250px',
                     marginTop: '56px', // Adjust for navbar height

@@ -20,7 +20,7 @@ const AppNavbar = ({ isCollapsed, setIsCollapsed }) => {
 
   const logoutUser = async (event) => {
     event.preventDefault();
-    
+    localStorage.removeItem("token");
     try {
         const response = await LoginService.logoutUser(username,sessionId);
         localStorage.removeItem("token");
