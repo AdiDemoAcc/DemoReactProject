@@ -8,9 +8,42 @@ class ResidentService {
             headers: {
                 "Authorization" : `Bearer ${token}`
             }
+        })
+        .then(response => response.data)
+        .catch(error => {
+            console.error("An error occurred: ",error);
         });
         return response;
     } 
+
+    async getBuildingAndApartmentData() {
+        const token = localStorage.getItem("token");
+        const response = await api.get("/T3000/S3003",{
+            headers: {
+                "Authorization" : `Bearer ${token}`
+            }
+        })
+        .then(response => response.data)
+        .catch(error => {
+            console.error("An error occurred: ",error);
+        });
+        return response;
+    }
+
+    async addResidentInfoMaker(residentData) {
+        const token = localStorage.getItem("token");
+        const response = await api.post("/T3000/S3002",residentData,{
+            headers : {
+                "Authorization" : `Bearer ${token}`
+            }
+        })
+        .then(response => response.data)
+        .catch(error => {
+            console.error("An error occurred: ",error);
+        });
+
+        return response;
+    }
 
 }
 

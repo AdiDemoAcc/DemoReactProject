@@ -30,7 +30,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
         document.querySelectorAll(".menu-custom-link-button").forEach(elem => {
             elem.classList.remove("active");
         });
-        console.log("Clicked element:", event.currentTarget);
+        // console.log("Clicked element:", event.currentTarget);
         event.currentTarget.classList.add("active");
     }
 

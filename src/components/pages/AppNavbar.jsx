@@ -29,9 +29,11 @@ const AppNavbar = ({ isCollapsed, setIsCollapsed }) => {
             localStorage.removeItem("user");
             localStorage.removeItem("menuItemList");
             localStorage.removeItem("menuList");
+            console.log("Removing localstorage data AppNavbar - Line 32");
             navigate("/", { replace: true });
         } else {
             alert("Logout failed: " + response.errorMsg);
+            navigate("/", { replace : true });
         }
     } catch (error) {
         console.error("Logout error:", error);

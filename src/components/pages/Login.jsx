@@ -49,6 +49,7 @@ const Login = () => {
         // localStorage.removeItem("menuList");
 
         localStorage.clear();
+        console.log("Removing localstorage data Login - Line 52");
         try {
             const response = await LoginService.loginService(login);
             const { respObject, errorMsg, errorCd } = response;
@@ -58,11 +59,14 @@ const Login = () => {
                 let roleId = user.roleId;
                 let token = respObject.token;
                 let sessionId = respObject.sessionId;
+                let expiresIn = 86400;
+                let expirationTime = new Date().getTime() + expiresIn*1000;
 
                 // Store user session data
                 localStorage.setItem("token", token);
                 localStorage.setItem("user", JSON.stringify(user));
                 localStorage.setItem("sessionId",sessionId);
+                localStorage.setItem("expirationTime",expirationTime);
                 const menuResponse = await LoginService.menuMapService(roleId);
                 const { respObject: menuData, errorMsg: menuErrorMsg, errorCd: menuErrorCd } = menuResponse;
                 console.log("Menu Response: ",menuData);
