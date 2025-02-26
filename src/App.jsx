@@ -4,9 +4,9 @@ import { Route, Routes } from 'react-router-dom'
 import Login from './components/pages/Login'
 import Authenticator from './Authenticator'
 import Dashboard from './components/pages/Dashboard'
-import NewTransaction from './components/pages/NewTransaction'
 import DisplayResidents from './components/pages/DisplayResidents'
 import AddResident from './components/pages/AddResident'
+import NewTransaction from './components/pages/Trasactions/NewTransactions/NewTransaction'
 
 function App() {
 

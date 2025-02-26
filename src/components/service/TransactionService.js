@@ -13,7 +13,11 @@ class TransactionService {
                         "Content-Type" : "application/json"
                     }
                 }
-            );
+            )
+            .then(response => response.data)
+            .catch((error) => {
+                console.error("An error occurred: ",error);
+            });
             return response;
         } catch (error) {
             throw error.response?.data || { errorMsg : "Something went wrong!" }

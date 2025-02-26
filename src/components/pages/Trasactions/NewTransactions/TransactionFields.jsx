@@ -1,0 +1,57 @@
+const transactionfields = (txnTypeOptions,txnCategoryOptions,txnAmountOptions,glAccntOptions,buildings,filteredApartments) => [
+    {
+        name : "buildingId",
+        label : "Building",
+        type : "select",
+        col: 6,
+        options: buildings,
+        optionsId : "bldngId",
+        showfield : "",
+    },
+    {
+        name: "aptmntId",
+        label : "Apartment",
+        type : "select",
+        col : 6,
+        options : filteredApartments,
+        disabled : filteredApartments.length === 0,
+        optionsId: "aptmntId",
+    },
+    { name : "startDate", label : "Start Date", type : "date", col: 6 },
+    { name : "endDate", label : "End Date", type : "date", col : 6 },
+    {
+        name : "glAccntId",
+        label : "Gl Account Number",
+        type : "select",
+        col : 6,
+        options : glAccntOptions,
+        optionsId : "glAccntId",
+    },
+    {
+        name : "transactionType",
+        label : "Transaction Type",
+        type : "select",
+        col : 6,
+        options : txnTypeOptions,
+        optionsId : "id",
+    },
+    {
+        name : "transactionCategory",
+        label : 'Category',
+        type : 'select',
+        col : 6,
+        options : txnCategoryOptions,
+        optionsId : "id",
+    },
+    {
+        name : "transactionAmnt",
+        label : 'Transaction Amount',
+        type : 'select',
+        col: 6,
+        options : txnAmountOptions,
+        optionsId : "id",
+    },
+    { name : "makerRmrks", label : "Remarks", type: "textarea", col : 12, row : 3 },
+]
+
+export default transactionfields;

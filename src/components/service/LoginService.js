@@ -48,6 +48,29 @@ class LoginService {
             throw error.response?.data || { errorMsg: "Logout failed" };
         }
     }
+
+    async checkUserSession() {
+        const token = localStorage.getItem("token");
+        const sessionId = localStorage.getItem("sessionId");
+
+        let user = JSON.parse(localStorage.getItem("user"));
+
+        let username = user.username;
+
+        const response = await api.post("/T1000/S1004",{
+                username,sessionId
+            }, {
+                headers: {
+                    "Authorization" : `Bearer ${token}`
+                }
+            })
+            .then(response => response.data)
+            .catch(error => {
+                console.error("An error occurred: ",error);
+            });
+
+            return response;
+    }
     
 }
 
