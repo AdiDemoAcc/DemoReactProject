@@ -24,6 +24,26 @@ class TransactionService {
         }
     }
 
+    async getTxnGlAccntList() {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await api.get("/T8000/S8007",
+                {
+                    headers: {
+                        "Authorization" : `Bearer ${token}`,
+                    }
+                }
+            )
+            .then(response => response.data)
+            .catch((error) => {
+                console.error("An error occurred: ",error);
+            });
+            return response;
+        } catch (error) {
+            throw error.response?.data || { errorMsg : "Something went wrong!" }
+        }
+    }
+
 }
 
 export default new TransactionService();

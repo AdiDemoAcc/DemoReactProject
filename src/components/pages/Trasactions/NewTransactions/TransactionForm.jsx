@@ -36,7 +36,7 @@ const TransactionForm = ({
                                                 disabled={field.disabled}
                                             >
                                                 {field.options.map((option) => (
-                                                    <option key={option[field.optionsId]} value={option[field.optionsId]}>
+                                                    <option key={option[field.optionsId]} value={option[field.valueId]}>
                                                         {option.name || option.buildingName || option.aptmntNo || option.accntNo}
                                                     </option>
                                                 ))}

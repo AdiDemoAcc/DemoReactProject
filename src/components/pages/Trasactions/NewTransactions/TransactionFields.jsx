@@ -7,6 +7,7 @@ const transactionfields = (txnTypeOptions,txnCategoryOptions,txnAmountOptions,gl
         options: buildings,
         optionsId : "bldngId",
         showfield : "",
+        valueId: "bldngId",
     },
     {
         name: "aptmntId",
@@ -16,6 +17,7 @@ const transactionfields = (txnTypeOptions,txnCategoryOptions,txnAmountOptions,gl
         options : filteredApartments,
         disabled : filteredApartments.length === 0,
         optionsId: "aptmntId",
+        valueId: "aptmntId",
     },
     { name : "startDate", label : "Start Date", type : "date", col: 6 },
     { name : "endDate", label : "End Date", type : "date", col : 6 },
@@ -26,14 +28,7 @@ const transactionfields = (txnTypeOptions,txnCategoryOptions,txnAmountOptions,gl
         col : 6,
         options : glAccntOptions,
         optionsId : "glAccntId",
-    },
-    {
-        name : "transactionType",
-        label : "Transaction Type",
-        type : "select",
-        col : 6,
-        options : txnTypeOptions,
-        optionsId : "id",
+        valueId: "glAccntId",
     },
     {
         name : "transactionCategory",
@@ -42,6 +37,16 @@ const transactionfields = (txnTypeOptions,txnCategoryOptions,txnAmountOptions,gl
         col : 6,
         options : txnCategoryOptions,
         optionsId : "id",
+        valueId: "name",
+    },
+    {
+        name : "transactionType",
+        label : "Transaction Type",
+        type : "select",
+        col : 6,
+        options : txnTypeOptions,
+        optionsId : "id",
+        valueId: "name",
     },
     {
         name : "transactionAmnt",
@@ -50,6 +55,7 @@ const transactionfields = (txnTypeOptions,txnCategoryOptions,txnAmountOptions,gl
         col: 6,
         options : txnAmountOptions,
         optionsId : "id",
+        valueId: "name",
     },
     { name : "makerRmrks", label : "Remarks", type: "textarea", col : 12, row : 3 },
 ]

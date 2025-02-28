@@ -13,6 +13,7 @@ const NewTransaction = () => {
     const [apartments, setApartments] = useState([]);
     const [filteredApartments, setFilteredApartments] = useState([]);
     const [glAccntOptions , setGlAccntOptions] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     const [transaction, setTransaction] = useState({
         transactionId: '',
@@ -31,6 +32,17 @@ const NewTransaction = () => {
     });
 
     const handleChange = (e) => {
+        const {name,value} = e.target;
+
+        let updatedTransaction = {...transaction, [name] : value};
+
+        if (name === "transactionCategory") {
+            const categoryName = value;
+            setSelectedCategory(categoryName);
+        }
+
+        
+
         setTransaction({ ...transaction, [e.target.name]: e.target.value });
     };
 
@@ -62,6 +74,17 @@ const NewTransaction = () => {
               }
           } catch (error) {
               console.error("Failed to fetch buildings and apartments:", error);
+          }
+
+          //Fetch Gl Accounts
+
+          try {
+            const resp = await TransactionService.getTxnGlAccntList();
+            if (resp?.respObject) {
+                setGlAccntOptions(resp.respObject);
+            }
+          } catch (error) {
+            console.error("Failed to fetch Gl Accounts:", error);
           }
       };
   

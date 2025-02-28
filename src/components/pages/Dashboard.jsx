@@ -8,7 +8,8 @@ const Dashboard = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    DashboardService.dashboardTxnService()
+    if (token) {
+      DashboardService.dashboardTxnService()
       .then(response => {
         // console.log("API Response:", response.data);
         if (response.data && response.data.respObject) {
@@ -16,6 +17,7 @@ const Dashboard = () => {
         }
       })
       .catch(error => console.error("Error fetching transaction summary:", error));
+    }
   }, []);
 
   if (!data) return <p>Loading...</p>;

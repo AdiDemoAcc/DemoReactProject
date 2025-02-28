@@ -7,10 +7,6 @@ import { replace, useNavigate } from 'react-router-dom'
 
 const AppNavbar = ({ isCollapsed, setIsCollapsed }) => {
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const username = user.username;
-  const token = localStorage.getItem("token");
-  let sessionId = localStorage.getItem("sessionId");
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -21,18 +17,26 @@ const AppNavbar = ({ isCollapsed, setIsCollapsed }) => {
   const logoutUser = async (event) => {
     event.preventDefault();
     try {
-        const response = await LoginService.logoutUser(username,sessionId);
-        localStorage.removeItem("token");
-        if (response.errorCd === "LOGOUT_SUCCESS") {
+
+        const user = JSON.parse(localStorage.getItem("user"));
+        
+        const token = localStorage.getItem("token");
+        let sessionId = localStorage.getItem("sessionId");
+        if (token && user && sessionId) {
+            const username = user.username;
+            const response = await LoginService.logoutUser(username,sessionId);
             localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            localStorage.removeItem("menuItemList");
-            localStorage.removeItem("menuList");
-            console.log("Removing localstorage data AppNavbar - Line 32");
-            navigate("/", { replace: true });
-        } else {
-            alert("Logout failed: " + response.errorMsg);
-            navigate("/", { replace : true });
+            if (response.errorCd === "LOGOUT_SUCCESS") {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                localStorage.removeItem("menuItemList");
+                localStorage.removeItem("menuList");
+                console.log("Removing localstorage data AppNavbar - Line 32");
+                navigate("/", { replace: true });
+                } else {
+                    alert("Logout failed: " + response.errorMsg);
+                    navigate("/", { replace : true });
+                }
         }
     } catch (error) {
         console.error("Logout error:", error);
