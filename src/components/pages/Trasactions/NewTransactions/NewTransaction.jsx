@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, Form, Button, Container, Row, Col } from 'react-bootstrap';
 import TransactionService from '../../../service/TransactionService';
 import ResidentService from '../../../service/ResidentService';
-import '../../../css/NewTransaction.css'; // Import external CSS file
+
 import TransactionForm from './TransactionForm';
 
 const NewTransaction = () => {
@@ -50,7 +50,7 @@ const NewTransaction = () => {
       const fetchData = async () => {
           try {
               
-              const response = await TransactionService.getTxnMstData(); // ✅ Await response
+              const response = await TransactionService.getTxnMstData(); 
               console.log(response);
   
               if (response?.errorCd === "REQUEST_SUCCESS") {

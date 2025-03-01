@@ -1,6 +1,7 @@
 import React from 'react'
 import transactionfields from './TransactionFields'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
+import '../../../css/NewTransaction.css'; 
 
 const TransactionForm = ({
     transaction,
@@ -18,7 +19,7 @@ const TransactionForm = ({
     const fields = transactionfields(txnTypeOptions, txnCategoryOptions, txnAmountOptions, glAccntOptions, buildings, filteredApartments)
 
     return (
-        <Container className='transaction-container'>
+        <Container fluid className='transaction-container'>
             <Card className='transaction-card'>
                 <Card.Body>
                     <Card.Title className='transaction-title'>New Transaction</Card.Title>
@@ -35,6 +36,7 @@ const TransactionForm = ({
                                                 onChange={field.name === "buildingId" ? handleBuildingChange : handleChange}
                                                 disabled={field.disabled}
                                             >
+                                                <option value="" selected disabled>Select {field.label}</option>
                                                 {field.options.map((option) => (
                                                     <option key={option[field.optionsId]} value={option[field.valueId]}>
                                                         {option.name || option.buildingName || option.aptmntNo || option.accntNo}
