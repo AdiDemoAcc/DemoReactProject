@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Card, Form, Button, Container, Row, Col } from 'react-bootstrap';
 import TransactionService from '../../../service/TransactionService';
 import ResidentService from '../../../service/ResidentService';
-import '../../../css/NewTransaction.css'; // Import external CSS file
+
 import TransactionForm from './TransactionForm';
 
 const NewTransaction = () => {
     const [txnCategory, setTxnCategory] = useState([]);
     const [txnType, setTxnType] = useState([]);
+    const [filteredTxnType, setFilteredTxnType] = useState([]);
     const [txnAmnt, setTxnAmnt] = useState([]);
+    const [filteredTxnAmnt, setFilteredTxnAmnt] = useState([]);
     const [buildings, setBuildings] = useState([]);
     const [apartments, setApartments] = useState([]);
     const [filteredApartments, setFilteredApartments] = useState([]);
@@ -41,8 +43,6 @@ const NewTransaction = () => {
             setSelectedCategory(categoryName);
         }
 
-        
-
         setTransaction({ ...transaction, [e.target.name]: e.target.value });
     };
 
@@ -50,7 +50,7 @@ const NewTransaction = () => {
       const fetchData = async () => {
           try {
               
-              const response = await TransactionService.getTxnMstData(); // ✅ Await response
+              const response = await TransactionService.getTxnMstData(); 
               console.log(response);
   
               if (response?.errorCd === "REQUEST_SUCCESS") {
@@ -92,11 +92,39 @@ const NewTransaction = () => {
   }, []);
   
 
+  useEffect(() => {
+    if (selectedCategory) {
+        const selectedCategoryObject = txnCategory.find(cat => cat.name === selectedCategory);
+        if (selectedCategoryObject) {
+            const filteredTxnAmnt = txnAmnt.filter(amount => Number(amount.id) === Number(selectedCategoryObject.id));
+            const filteredTxnType = txnType.filter(type => Number(type.id) === Number(selectedCategoryObject.id));
+            
+            setFilteredTxnAmnt(filteredTxnAmnt);
+            setFilteredTxnType(filteredTxnType);
+            
+            // Ensure txnAmnt is not empty before setting transactionAmnt
+            if (filteredTxnAmnt.length > 0) {
+                setTransaction(prevState => ({
+                    ...prevState,
+                    transactionAmnt: filteredTxnAmnt.length > 0 ? filteredTxnAmnt[0].name : "",
+                    transactionType: filteredTxnType.length > 0 ? filteredTxnType[0].name : ""  
+                }));
+            }
+        } else {
+            setFilteredTxnType(txnType);
+            setFilteredTxnAmnt(txnAmnt);
+        }
+    } else {
+        setFilteredTxnType(txnType);
+        setFilteredTxnAmnt(txnAmnt);
+    }
+  },[selectedCategory, txnCategory, txnType, txnAmnt])
+
     // Handle building selection and filter apartments accordingly
     const handleBuildingChange = (e) => {
         let selectedBuildingId = Number(e.target.value);
         // Filter apartments based on selected building
-        const filteredApts = apartments.filter(apartment => Number(apartment.bldngId) === selectedBuildingId);
+        const filteredApts = apartments.filter(apartment => Number(apartment.bldngId) === Number(selectedBuildingId));
         setFilteredApartments(filteredApts);
     };
 
@@ -110,15 +138,16 @@ const NewTransaction = () => {
 
         <TransactionForm 
             transaction={transaction}
-            txnTypeOptions={txnType}
+            txnTypeOptions={filteredTxnType}
             txnCategoryOptions={txnCategory}
-            txnAmountOptions={txnAmnt}
+            txnAmountOptions={filteredTxnAmnt}
             buildings={buildings}
             filteredApartments={filteredApartments}
             handleBuildingChange={handleBuildingChange}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             glAccntOptions={glAccntOptions}
+            selectedCategory={selectedCategory} 
         />
 
         // <Container className="transaction-container">

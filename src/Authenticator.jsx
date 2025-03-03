@@ -11,6 +11,10 @@ const Authenticator = () => {
     let currentTime = new Date().getTime();
 
     useEffect(() => {
+
+        // token = localStorage.getItem('token');
+        // expirationTime = localStorage.getItem("expirationTime");
+
         const checkUserSession = async () => {
             try {
                 const response = await LoginService.checkUserSession();

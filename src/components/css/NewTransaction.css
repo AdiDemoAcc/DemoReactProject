@@ -1,16 +1,19 @@
-/* Center the transaction card in the middle of the screen */
+/* Ensure the container takes up the full viewport */
 .transaction-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-height: 80vh;
-    
+    /* height: 100vh; */
+    /* width: 100vw;  */
+    padding: 20px;
 }
 
-/* Stylish Card with Shadow */
+/* Make the card take the full width and height */
 .transaction-card {
-    width: 80%;
-    max-width: 130vw;
+    /* width: 100%; */
+    /* height: 100%; */
+    max-width: 100%; /* Prevent stretching too much */
+    max-height: 100%;
     background: white;
     padding: 30px;
     border-radius: 12px;
