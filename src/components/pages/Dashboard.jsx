@@ -8,6 +8,7 @@ const Dashboard = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     if (token) {
       DashboardService.dashboardTxnService()
       .then(response => {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import transactionfields from './TransactionFields'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import '../../../css/NewTransaction.css'; 
@@ -36,12 +36,13 @@ const TransactionForm = ({
                                                 value={transaction[field.name]}
                                                 onChange={field.name === "buildingId" ? handleBuildingChange : handleChange}
                                                 disabled={field.disabled}
+                                                defaultValue=""
                                                 required
                                             >
                                                 { field.name !== "transactionType" && (<option value="" disabled>Select {field.label}</option>)   }
                                                 {field.options.map((option) => (
                                                     <option key={option[field.optionsId]} value={option[field.valueId]}>
-                                                        {option.name || option.buildingName || option.aptmntNo || option.accntNo}
+                                                        {field.name === "transactionType" ?  option.name === "Cr" ? "Credit Amount" : "Debit Amount" : option.name || option.buildingName || option.aptmntNo || option.accntNo}
                                                     </option>
                                                 ))}
                                             </Form.Select>

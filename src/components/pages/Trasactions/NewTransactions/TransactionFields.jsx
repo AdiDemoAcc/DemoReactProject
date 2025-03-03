@@ -3,6 +3,8 @@ const transactionfields = (txnTypeOptions, txnCategoryOptions, txnAmountOptions,
     const isEditableCatagory = selectedCategory !== "Maintenance(Tenant)" && selectedCategory !== "Maintenance(Owner)";
     const isAmountEditable = isOtherCategory || isEditableCatagory || (transaction.transactionAmnt === "-1" || !transaction.transactionAmnt);
     const otherTxnTypeOptions = [{id: 1, name: "Cr"}, {id: 2, name: "Db"}];
+    const isTxnTypeEnabled = selectedCategory;
+
     return [
         {
             name: "buildingId",
@@ -49,18 +51,18 @@ const transactionfields = (txnTypeOptions, txnCategoryOptions, txnAmountOptions,
             label: "Transaction Type",
             type: "select",
             col: 6,
-            options: isOtherCategory ? otherTxnTypeOptions : txnTypeOptions,
+            options: isOtherCategory ? otherTxnTypeOptions : isTxnTypeEnabled ? txnTypeOptions : [],
             optionsId: "id",
             valueId: "name",
-            // disabled: !isOtherCategory,
-            disabled: txnTypeOptions.length === 0,
+            disabled: !isTxnTypeEnabled,
+            // disabled: txnTypeOptions.length === 0,
         },
         {
             name: "transactionAmnt",
             label: 'Transaction Amount',
             type: 'input',
             col: 6,
-            disabled: !isAmountEditable, 
+            disabled: !selectedCategory || !isAmountEditable, 
         },
         { name: "makerRmrks", label: "Remarks", type: "textarea", col: 12, row: 3 },
     ];

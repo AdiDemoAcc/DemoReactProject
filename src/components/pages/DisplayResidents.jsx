@@ -9,7 +9,10 @@ const DisplayResidents = () => {
     const [buildings, setBuildings] = useState([]);
     const [apartments, setApartments] = useState([]);
 
+    const token = localStorage.getItem("token");
+
     useEffect(() => {
+
         const fetchData = async () => {
             try {
                 const response = await ResidentService.getAllResidents();
@@ -21,7 +24,9 @@ const DisplayResidents = () => {
             }
         };
 
-        fetchData();
+        if (token) {
+            fetchData();
+        }
     }, []);
 
     return (

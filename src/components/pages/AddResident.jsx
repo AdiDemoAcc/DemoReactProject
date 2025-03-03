@@ -32,6 +32,8 @@ const AddResident = () => {
     }))
   }
 
+  const token = localStorage.getItem("token");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     
@@ -75,13 +77,16 @@ const AddResident = () => {
     }
 
     const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.userId) {
+    if (token && user && user.userId) {
       setOccupantData((resident) => ({
         ...resident,
         makerCd: user.userId,
       }))
     }
-    fetchData();
+    if (token) {
+      fetchData();  
+    }
+    
 
   }, [navigate])
 

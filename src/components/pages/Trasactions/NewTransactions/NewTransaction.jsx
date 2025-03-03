@@ -33,6 +33,8 @@ const NewTransaction = () => {
         makerRmrks: ''
     });
 
+    const token = localStorage.getItem("token");
+
     const handleChange = (e) => {
         const {name,value} = e.target;
 
@@ -49,7 +51,6 @@ const NewTransaction = () => {
     useEffect(() => {
       const fetchData = async () => {
           try {
-              
               const response = await TransactionService.getTxnMstData(); 
               console.log(response);
   
@@ -88,12 +89,15 @@ const NewTransaction = () => {
           }
       };
   
-      fetchData(); 
+      if (token) {
+        fetchData(); 
+      }
   }, []);
   
 
   useEffect(() => {
-    if (selectedCategory) {
+
+    if (selectedCategory && token) {
         const selectedCategoryObject = txnCategory.find(cat => cat.name === selectedCategory);
         if (selectedCategoryObject) {
             const filteredTxnAmnt = txnAmnt.filter(amount => Number(amount.id) === Number(selectedCategoryObject.id));
