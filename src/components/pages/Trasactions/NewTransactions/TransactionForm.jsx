@@ -14,9 +14,10 @@ const TransactionForm = ({
     handleChange,
     handleBuildingChange,
     handleSubmit,
+    selectedCategory
 }) => {
 
-    const fields = transactionfields(txnTypeOptions, txnCategoryOptions, txnAmountOptions, glAccntOptions, buildings, filteredApartments)
+    const fields = transactionfields(txnTypeOptions, txnCategoryOptions, txnAmountOptions, glAccntOptions, buildings, filteredApartments,selectedCategory,transaction)
 
     return (
         <Container fluid className='transaction-container'>
@@ -35,8 +36,9 @@ const TransactionForm = ({
                                                 value={transaction[field.name]}
                                                 onChange={field.name === "buildingId" ? handleBuildingChange : handleChange}
                                                 disabled={field.disabled}
+                                                required
                                             >
-                                                <option value="" selected disabled>Select {field.label}</option>
+                                                { field.name !== "transactionType" && (<option value="" disabled>Select {field.label}</option>)   }
                                                 {field.options.map((option) => (
                                                     <option key={option[field.optionsId]} value={option[field.valueId]}>
                                                         {option.name || option.buildingName || option.aptmntNo || option.accntNo}
@@ -48,9 +50,11 @@ const TransactionForm = ({
                                                 as={field.type === "textarea" ? "textarea" : "input"}
                                                 type={field.type !== "textarea" ? field.type : undefined}
                                                 name={field.name}
-                                                value={transaction[field.name]}
+                                                value={field.name === "transactionAmnt" && transaction[field.name] === "-1" ? "" : transaction[field.name]}
                                                 onChange={handleChange}
                                                 {...(field.row && { rows: field.row })}
+                                                disabled={field.disabled} 
+                                                required
                                             />
                                         )}
                                     </Form.Group>
