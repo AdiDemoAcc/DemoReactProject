@@ -45,6 +45,21 @@ class ResidentService {
         return response;
     }
 
+    async getResidentData(reqObj) {
+        const token = localStorage.getItem("token");
+        const response = await api.post("/T3000/S3004",reqObj, {
+            headers: {
+                "Authorization" : `Bearer ${token}`
+            }
+        })
+        .then(response => response.data)
+        .catch(error => {
+            console.error("An error occurred: ",error);
+        });
+
+        return response;
+    }
+
 }
 
 export default new ResidentService();

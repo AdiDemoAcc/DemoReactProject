@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import ResidentService from '../service/ResidentService';
+import ResidentService from '../../../service/ResidentService';
 import { Table, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "../css/DisplayResidents.css"
+import "../../../css/DisplayResidents.css"
 
 const DisplayResidents = () => {
     const [residents, setResidents] = useState([]);
