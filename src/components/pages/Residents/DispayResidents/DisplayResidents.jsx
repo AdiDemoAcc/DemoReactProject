@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ResidentService from '../../../service/ResidentService';
-import { Table, Container } from 'react-bootstrap';
+import { Table, Container, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../../../css/DisplayResidents.css"
+import { useNavigate } from 'react-router-dom';
 
 const DisplayResidents = () => {
     const [residents, setResidents] = useState([]);
@@ -10,6 +11,8 @@ const DisplayResidents = () => {
     const [apartments, setApartments] = useState([]);
 
     const token = localStorage.getItem("token");
+
+    const navigate = useNavigate()
 
     useEffect(() => {
 
@@ -29,6 +32,12 @@ const DisplayResidents = () => {
         }
     }, []);
 
+    const handleView = (aptmntId) => {
+        navigate(`/view-resident/${aptmntId}`);
+    }
+
+
+
     return (
         <div className="display-residents-main-container">
             <Container className="display-residents-table-container">
@@ -43,11 +52,12 @@ const DisplayResidents = () => {
                                 <th>Occupant Name</th>
                                 <th>Occupant Type</th>
                                 <th>Building Name</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {residents.map((resident) => {
-                                const apartment = apartments.find(ap => ap.aptmntId === resident.aptmntMst.aptmntId);
+                                const apartment = apartments.find(ap => ap.aptmntId === resident.aptmnt.aptmntId);
                                 const building = buildings.find(b => b.bldngId === (apartment ? apartment.bldngId : null));
 
                                 return (
@@ -57,6 +67,14 @@ const DisplayResidents = () => {
                                         <td>{resident.occupantName}</td>
                                         <td>{resident.occupantType}</td>
                                         <td>{building ? building.buildingName : 'Unknown'}</td>
+                                        <td>
+                                            <Button
+                                                variant='outline-primary'
+                                                onClick={() => (handleView(apartment ? apartment.aptmntId : ''))}
+                                            >
+                                                View More
+                                            </Button>
+                                        </td>
                                     </tr>
                                 );
                             })}

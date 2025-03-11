@@ -7,6 +7,7 @@ import Dashboard from './components/pages/Dashboard'
 import AddResident from './components/pages/AddResident'
 import NewTransaction from './components/pages/Trasactions/NewTransactions/NewTransaction'
 import DisplayResidents from './components/pages/Residents/DispayResidents/DisplayResidents'
+import ViewResident from './components/pages/Residents/View/ViewResident'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path='/new-payment' element={<NewTransaction />} />
         <Route path='/show-residents' element={<DisplayResidents />} />
         <Route path='/add-resident' element={<AddResident />} />
+        <Route path='/view-resident/:aptmntId' element={<ViewResident />}/>
       </Route>
     </Routes>
   )

@@ -1,9 +1,14 @@
 import React, { useEffect } from 'react'
 import ResidentService from '../../../service/ResidentService'
+import { useParams } from 'react-router-dom'
 
-const ViewResident = (aptmntId) => {
-  
+const ViewResident = () => {
+
+    const {aptmntId} = useParams();
+
     useEffect(() => {
+      const token = localStorage.getItem('token');
+
         const fetchResident = async () => {
             const user = JSON.parse(localStorage.getItem("user"));
             
@@ -17,8 +22,10 @@ const ViewResident = (aptmntId) => {
             console.log(response);
         };
 
-        fetchResident();
-    })
+        if (token && aptmntId) {
+          fetchResident();
+        }
+    },[aptmntId])
   
   return (
     <div>
