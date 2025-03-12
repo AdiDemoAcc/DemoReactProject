@@ -1,4 +1,6 @@
+import axios from 'axios';
 import api from './api';
+import { backendUrl } from './config';
 
 
 
@@ -10,6 +12,15 @@ class LoginService {
        } catch (error) {
         throw error.response?.data || { errorMsg: 'Login Failed' };
        }
+    }
+
+    async checkBackend() {
+        try {
+            const response = await axios.get(`${backendUrl}/actuator/health`);
+            return response;
+        } catch (error) {
+            throw error.response?.data || {errorMsg: 'Server is down'};
+        }
     }
 
     async menuMapService(roleId) {

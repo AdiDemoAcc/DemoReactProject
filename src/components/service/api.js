@@ -3,7 +3,7 @@ import { backendUrl } from "./config";
 
 
 const api = axios.create({
-    baseURL: backendUrl,
+    baseURL: `${backendUrl}/ldgr`,
     withCredentials: true,
     headers : {
         "Content-Type" : "application/json"

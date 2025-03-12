@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Form, Container, Button } from 'react-bootstrap';
-import '../css/Login2.css';
+import '../../css/Login2.css';
 import { LockFill, PersonFill } from 'react-bootstrap-icons';
-import LoginService from '../service/LoginService';
+import LoginService from '../../service/LoginService';
 import { useNavigate } from 'react-router-dom';
-import logo from "../images/logo.png";
+import logo from "../../images/logo.png";
 
-const Login = () => {
+const LoginForm = () => {
     const [login, setLogin] = useState({
         username: '',
         password: '',
@@ -129,4 +129,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginForm;
