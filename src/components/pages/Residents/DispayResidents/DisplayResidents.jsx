@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import ResidentService from '../../../service/ResidentService';
-import { Table, Container, Button } from 'react-bootstrap';
+import { Table, Container, Button, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../../../css/DisplayResidents.css"
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 
 const DisplayResidents = () => {
     const [residents, setResidents] = useState([]);
     const [buildings, setBuildings] = useState([]);
     const [apartments, setApartments] = useState([]);
+    const [selectedBuilding, setSelectedBuilding] = useState(null);
 
     const token = localStorage.getItem("token");
 
@@ -36,12 +38,35 @@ const DisplayResidents = () => {
         navigate(`/view-resident/${aptmntId}`);
     }
 
+    const filteredAptmnts = selectedBuilding
+            ?apartments.filter(apartment => Number(apartment.bldngId) === Number(selectedBuilding.value))
+            : apartments;
 
+    const filteredResidents = selectedBuilding
+            ?residents.filter(resident => 
+                filteredAptmnts.some(apartment => Number(apartment.aptmntId) === Number(resident.aptmnt.aptmntId))
+            )
+            : residents;
 
     return (
         <div className="display-residents-main-container">
             <Container className="display-residents-table-container">
-                <h2 className="text-center text-white my-4">Residents List</h2>
+                <Row>
+                    <Col className='col-3'>
+                        <h2 className="text-white my-4 ms-3">Residents List</h2>
+                    </Col>
+                    <Col className='col-9'>
+                        <Select 
+                            className='custom-view-resident-building-react mt-4'
+                            options={buildings.map(bldng => ({ value: bldng.bldngId , label: bldng.buildingName }))}
+                            value={selectedBuilding}
+                            onChange={setSelectedBuilding}
+                            placeholder="Select Building"
+                            isClearable
+                        />
+                    </Col>
+                </Row>
+                
                 
                 <div className="display-residents-table-wrapper">
                     <Table striped bordered hover responsive="lg" className="custom-display-residents-table">
@@ -56,8 +81,8 @@ const DisplayResidents = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {residents.map((resident) => {
-                                const apartment = apartments.find(ap => ap.aptmntId === resident.aptmnt.aptmntId);
+                            {filteredResidents.map((resident) => {
+                                const apartment = filteredAptmnts.find(ap => ap.aptmntId === resident.aptmnt.aptmntId);
                                 const building = buildings.find(b => b.bldngId === (apartment ? apartment.bldngId : null));
 
                                 return (

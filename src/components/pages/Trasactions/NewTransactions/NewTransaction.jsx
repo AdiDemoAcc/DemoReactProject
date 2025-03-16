@@ -22,6 +22,7 @@ const NewTransaction = () => {
         transactionDate: '',
         aptmntId: '',
         startDate: '',
+        transactionDate: '',
         endDate: '',
         glAccntId: '',
         authStatus: '',
@@ -34,6 +35,8 @@ const NewTransaction = () => {
     });
 
     const token = localStorage.getItem("token");
+
+    const user = JSON.parse(localStorage.getItem("user"));
 
     const handleChange = (e) => {
         const {name,value} = e.target;
@@ -91,6 +94,11 @@ const NewTransaction = () => {
   
       if (token) {
         fetchData(); 
+        setTransaction(prev => ({
+            ...prev,
+            makerCd : user.userId,
+            makerDt : new Date()
+        }))
       }
   }, []);
   
@@ -132,10 +140,16 @@ const NewTransaction = () => {
         setFilteredApartments(filteredApts);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
       console.log("Transaction Submitted:", transaction);
-      // Call API to save transaction here
+      const response = await TransactionService.createNewTrasaction(transaction);
+      if (response?.errorCd === "REQUEST_SUCCESS") {
+            alert(response?.errorMsg || "Transaction successfull");
+            window.location.reload();
+      } else {
+        alert(response?.errorMsg || "Something went wrong");
+      }
   };
 
     return (
