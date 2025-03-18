@@ -8,7 +8,7 @@ const MenuRoutes = {
     303: "/dashboard",
     401: "/dashboard",
     402: "/new-payment",
-    403: "/dashboard",
+    403: "/reconcile-txn",
     501: "/dashboard",
     502: "/dashboard",
     503: "/dashboard",

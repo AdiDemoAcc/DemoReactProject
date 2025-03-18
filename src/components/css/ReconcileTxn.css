@@ -1,0 +1,26 @@
+.display-unauth-txn-custom-header {
+
+}
+
+.display-unauth-txn-custom-table {
+    border: 1px !important;
+    border-color: #fff !important;
+    border-top-left-radius: 15px !important;
+}
+
+.display-unauth-txn-custom-table-head {
+    border-top-left-radius: 15px !important;
+}
+
+.display-unauth-txn-custom-table-head th{
+    background-color: #2e76ea !important;
+    color: #fff !important;
+    font-weight: bolder;
+    
+}
+
+.display-unauth-txn-custom-table-head button :hover{
+    background-color: #2e76ea !important;
+    color: #fff !important;
+    border: 1px solid white !important;
+}

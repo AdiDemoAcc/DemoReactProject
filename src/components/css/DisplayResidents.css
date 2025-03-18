@@ -62,3 +62,7 @@
         max-height: 70vh;
     }
 }
+
+.custom-view-resident-building-react {
+    z-index: 100;
+}
