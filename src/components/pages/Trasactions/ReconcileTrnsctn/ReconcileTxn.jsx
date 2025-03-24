@@ -38,7 +38,7 @@ const ReconcileTxn = () => {
             <Container className='display-unauth-txn-custom-container'>
                 <Row className='display-unauth-txn-custom-header'>
                     <Col>
-                        <h2>Unauthorized Transaction List</h2>
+                        <h2>Transactions Pending Authorization</h2>
                     </Col>
                 </Row>
                 <div className='display-unauth-txn-custom-table-wrapper text-center'>

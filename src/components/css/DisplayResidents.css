@@ -66,3 +66,54 @@
 .custom-view-resident-building-react {
     z-index: 100;
 }
+
+.custom-select {
+    font-size: 16px;
+    max-width: 400px;
+}
+
+.apartment-card {
+    transition: transform 0.2s ease-in-out;
+    border-radius: 12px;
+    /* width: 80%; */
+}
+
+.apartment-card:hover {
+    transform: scale(1.05);
+}
+
+.apartment-header {
+    background-color: #343a40;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+}
+
+.occupant-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #343a40;
+}
+
+.show-residents-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: auto; /* Adjust as needed */
+    height: auto; /* Adjust as needed */
+    padding: 10px;
+    background-color: #ffffff;
+    color: white;
+    border-radius: 8px;
+    overflow: hidden; /* Prevents text from overflowing */
+    text-overflow: ellipsis; /* Optional: Truncate long text */
+    white-space: nowrap; /* Prevents text wrapping */
+  }
+  
+  .show-residents-container {
+    
+  }
+  
