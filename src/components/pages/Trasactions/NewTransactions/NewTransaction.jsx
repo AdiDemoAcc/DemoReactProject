@@ -22,7 +22,6 @@ const NewTransaction = () => {
         transactionDate: '',
         aptmntId: '',
         startDate: '',
-        transactionDate: '',
         endDate: '',
         glAccntId: '',
         authStatus: '',

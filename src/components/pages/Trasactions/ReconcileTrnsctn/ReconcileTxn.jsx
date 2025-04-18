@@ -59,7 +59,7 @@ const ReconcileTxn = () => {
                             {unauthTxnList.length > 0 ? (
                                 unauthTxnList.map(txn => (
                                     <tr key={txn.transactionId}>
-                                        <td>{txn.aptmnt.aptmntNo}</td>
+                                        <td>{txn.aptmnt!= null ? txn.aptmnt.aptmntNo : 'Society Transaction' }</td>
                                         <td>{txn.transactionAmnt}</td>
                                         {/* <td>{txn.glAccount.accntNo}</td> */}
                                         <td>{txn.transactionDate ? new Date(txn.transactionDate).toDateString() : ''}</td>
