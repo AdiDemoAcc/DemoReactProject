@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Form, Container, Button } from 'react-bootstrap';
+import { Card, Form, Container, Button, Row, Col, InputGroup } from 'react-bootstrap';
 import '../../css/Login2.css';
 import { LockFill, PersonFill } from 'react-bootstrap-icons';
 import LoginService from '../../service/LoginService';
 import { useNavigate } from 'react-router-dom';
 import logo from "../../images/logo.png";
+import loginBg from "../../images/login-background.jpeg";
 
 const LoginForm = () => {
     const [login, setLogin] = useState({
@@ -40,7 +41,7 @@ const LoginForm = () => {
 
     const loginSubmitAction = async (event) => {
         event.preventDefault();
-        
+
         // Clear old session data
         // localStorage.removeItem('token');
         // localStorage.removeItem('user');
@@ -60,16 +61,16 @@ const LoginForm = () => {
                 let token = respObject.token;
                 let sessionId = respObject.sessionId;
                 let expiresIn = 86400;
-                let expirationTime = new Date().getTime() + expiresIn*1000;
+                let expirationTime = new Date().getTime() + expiresIn * 1000;
 
                 // Store user session data
                 localStorage.setItem("token", token);
                 localStorage.setItem("user", JSON.stringify(user));
-                localStorage.setItem("sessionId",sessionId);
-                localStorage.setItem("expirationTime",expirationTime);
+                localStorage.setItem("sessionId", sessionId);
+                localStorage.setItem("expirationTime", expirationTime);
                 const menuResponse = await LoginService.menuMapService(roleId);
                 const { respObject: menuData, errorMsg: menuErrorMsg, errorCd: menuErrorCd } = menuResponse;
-                console.log("Menu Response: ",menuData);
+                console.log("Menu Response: ", menuData);
 
                 if (menuErrorCd === "REQUEST_SUCCESS") {
                     localStorage.setItem("menuItemList", JSON.stringify(menuData.menuItemMstList));
@@ -81,7 +82,7 @@ const LoginForm = () => {
                     alert("Something went wrong.");
                     console.error("Error: ", menuErrorMsg);
                 }
-                
+
             } else {
                 alert(errorMsg || "Login Failed");
             }
@@ -92,39 +93,60 @@ const LoginForm = () => {
     };
 
     return (
-        <Container className="custom-login-dashboard-container" id="customLoginDashboardContainer">
-            <Card className="custom-login-dashboard-card">
-                <div className="custom-login-dashboard-card-content">
-                    <Card.Header className="custom-login-dashboard-card-header" style={{ border: 'none' }}>
-                        <img src={logo} alt="Ledgerly Logo" className='custom-login-logo-image' id='loginLogoImage'></img>
+        <Container fluid className="login-layout d-flex p-0">
+            {/* Left panel */}
+            <Col md={6} className="left-panel d-flex align-items-center justify-content-center">
+                <Card className="login-card glass">
+                    <Card.Header className="border-0 bg-transparent text-center">
+                        <img src={logo} alt="Ledgerly logo" className="login-logo" />
                     </Card.Header>
+
                     <Card.Body>
-                        <Form onSubmit={(e) => loginSubmitAction(e)}>
-                            <div className="input-group mb-3">
-                                <span className="input-group-text text-center">
-                                    <PersonFill size={20} className="custom-login-dashboard-username-icon" />
-                                </span>
-                                <Form.Control type="text" name="username" value={login.username} onChange={handleChange} placeholder="Username" required />
-                            </div>
-                            <div className="input-group mb-3">
-                                <span className="input-group-text text-center">
-                                    <LockFill size={20} className="custom-login-dashboard-password-icon" />
-                                </span>
-                                <Form.Control type="password" name="password" value={login.password} onChange={handleChange} placeholder="Password" required />
-                            </div>
-                            <div className='row ms-1 mb-3 d-flex align-items-center'>
-                                <div className="custom-checkbox-container">
-                                    <Form.Check type="checkbox" name="clearSession" checked={login.clearSession} onChange={handleChange} className="custom-checkbox" />
-                                    <label className="custom-checkbox-label">Clear Last Session</label>
-                                </div>
-                            </div>
-                            <div>
-                                <Button type="submit" variant='outline-success' className='w-100 text-center'>Login</Button>
-                            </div>
+                        <Form onSubmit={loginSubmitAction}>
+                            <InputGroup className="mb-3">
+                                <InputGroup.Text><PersonFill /></InputGroup.Text>
+                                <Form.Control
+                                    name="username"
+                                    value={login.username}
+                                    onChange={handleChange}
+                                    placeholder="Username"
+                                    required
+                                />
+                            </InputGroup>
+
+                            <InputGroup className="mb-3">
+                                <InputGroup.Text><LockFill /></InputGroup.Text>
+                                <Form.Control
+                                    type="password"
+                                    name="password"
+                                    value={login.password}
+                                    onChange={handleChange}
+                                    placeholder="Password"
+                                    required
+                                />
+                            </InputGroup>
+
+                            <Form.Check
+                                type="checkbox"
+                                name="clearSession"
+                                checked={login.clearSession}
+                                onChange={handleChange}
+                                label="Clear last session"
+                                className="mb-3"
+                            />
+
+                            <Button type="submit" variant="success" className="w-100">
+                                Login
+                            </Button>
                         </Form>
                     </Card.Body>
-                </div>
-            </Card>
+                </Card>
+            </Col>
+
+            {/* Right hero image (hidden < md) */}
+            <Col md={6} className="p-0 d-none d-md-block overflow-hidden">
+                <div className="hero-img" />
+            </Col>
         </Container>
     );
 };

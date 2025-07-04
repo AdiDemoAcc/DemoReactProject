@@ -29,7 +29,7 @@ const TransactionForm = ({
                             {fields.map((field, index) => (
                                 <Col md={field.col} key={index}>
                                     <Form.Group>
-                                        <Form.Label>{field.label}</Form.Label>
+                                        <Form.Label>{field.label} {field.required && <span className="text-danger">*</span>}</Form.Label>
                                         {field.type === "select" ? (
                                             <Form.Select
                                                 name={field.name}
@@ -37,7 +37,7 @@ const TransactionForm = ({
                                                 onChange={field.name === "buildingId" ? handleBuildingChange : handleChange}
                                                 disabled={field.disabled}
                                                 defaultValue=""
-                                                required
+                                                required = {field.required}
                                             >
                                                 { field.name !== "transactionType" && (<option value="" disabled>Select {field.label}</option>)   }
                                                 {field.options.map((option) => (
@@ -55,7 +55,7 @@ const TransactionForm = ({
                                                 onChange={handleChange}
                                                 {...(field.row && { rows: field.row })}
                                                 disabled={field.disabled} 
-                                                required
+                                                required = {field.required}
                                             />
                                         )}
                                     </Form.Group>

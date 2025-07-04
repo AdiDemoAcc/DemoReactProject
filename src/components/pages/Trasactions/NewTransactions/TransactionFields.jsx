@@ -15,6 +15,7 @@ const transactionfields = (txnTypeOptions, txnCategoryOptions, txnAmountOptions,
             optionsId: "bldngId",
             showfield: "",
             valueId: "bldngId",
+            required: true
         },
         {
             name: "aptmntId",
@@ -25,10 +26,11 @@ const transactionfields = (txnTypeOptions, txnCategoryOptions, txnAmountOptions,
             disabled: filteredApartments.length === 0,
             optionsId: "aptmntId",
             valueId: "aptmntId",
+            required: false
         },
-        { name: "transactionDate", label: "Payment Date", type: "date", col: 4 },
-        { name: "startDate", label: "Start Date", type: "date", col: 4 },
-        { name: "endDate", label: "End Date", type: "date", col: 4 },
+        { name: "transactionDate", label: "Payment Date", type: "date", col: 4,required: true },
+        { name: "startDate", label: "Start Date", type: "date", col: 4,required: true },
+        { name: "endDate", label: "End Date", type: "date", col: 4,required: true },
         {
             name: "glAccntId",
             label: "Gl Account Number",
@@ -37,6 +39,7 @@ const transactionfields = (txnTypeOptions, txnCategoryOptions, txnAmountOptions,
             options: glAccntOptions,
             optionsId: "glAccntId",
             valueId: "glAccntId",
+            required: true
         },
         {
             name: "transactionCategory",
@@ -46,6 +49,7 @@ const transactionfields = (txnTypeOptions, txnCategoryOptions, txnAmountOptions,
             options: txnCategoryOptions,
             optionsId: "id",
             valueId: "name",
+            required: true
         },
         {
             name: "transactionType",
@@ -57,6 +61,7 @@ const transactionfields = (txnTypeOptions, txnCategoryOptions, txnAmountOptions,
             valueId: "name",
             disabled: !isTxnTypeEnabled,
             // disabled: txnTypeOptions.length === 0,
+            required: true
         },
         {
             name: "transactionAmnt",
@@ -64,8 +69,9 @@ const transactionfields = (txnTypeOptions, txnCategoryOptions, txnAmountOptions,
             type: 'input',
             col: 6,
             disabled: !selectedCategory || !isAmountEditable, 
+            required: true
         },
-        { name: "makerRmrks", label: "Remarks", type: "textarea", col: 12, row: 3 },
+        { name: "makerRmrks", label: "Remarks", type: "textarea", col: 12, row: 3,required: true },
     ];
 };
 
