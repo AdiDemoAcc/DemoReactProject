@@ -34,17 +34,19 @@ const Dashboard = () => {
   const COLORS = ["#4CAF50", "#F44336"]; // Green and red
 
   // Group apartment payments by building
-  const buildingWiseData = Object.entries(data.bldngPayments).map(([buildingName, apartments]) => {
-    const apartmentList = Object.entries(apartments).map(([aptId, amount]) => ({
-      name: `Apt ${aptId}`,
-      value: amount
-    }));
+  const buildingWiseData = data?.bldngPayments
+  ? Object.entries(data.bldngPayments).map(([buildingName, apartments]) => {
+      const apartmentList = Object.entries(apartments).map(([aptId, amount]) => ({
+        name: `Apt ${aptId}`,
+        value: amount
+      }));
 
-    return {
-      building: buildingName,
-      apartments: apartmentList
-    };
-  });
+      return {
+        building: buildingName,
+        apartments: apartmentList
+      };
+    })
+  : [];
 
   return (
     <div className="dashboard-container">

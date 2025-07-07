@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { ChevronDown, ChevronUp } from 'react-bootstrap-icons';
 import '../../../css/DisplayResidents.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 const DisplayResidents = () => {
   const [residents, setResidents] = useState([]);
@@ -20,6 +21,7 @@ const DisplayResidents = () => {
     const fetchData = async () => {
       try {
         const response = await ResidentService.getAllResidents();
+        console.log(response);
         const { aptmntOccpntList, bldngList, aptmntMstList } = response.respObject;
         setResidents(aptmntOccpntList);
         setBuildings(bldngList);
@@ -78,7 +80,7 @@ const DisplayResidents = () => {
               .map(([floor, floorApartments]) => (
                 <div key={floor} className="mb-4">
                   <div className="d-flex justify-content-between align-items-center floor-header px-3 py-2">
-                    <h5 className="mb-0">🛗 Floor {floor}</h5>
+                    <h5 className="mb-0">🛗 {floorApartments[0].floorName || `Floor ${floor}`}</h5>
                     <Button
                       variant="light border-dark"
                       size="sm"
@@ -95,16 +97,18 @@ const DisplayResidents = () => {
                         const isOccupied = !!resident;
                         return (
                           <Col key={apartment.aptmntId} xs={12} sm={6} md={4} lg={3} className="mb-3">
-                            <Card className={`apartment-card ${isOccupied ? 'occupied' : 'vacant'}`}>
-                              <Card.Header className="apartment-header">
-                                {apartment.aptmntNo}
-                              </Card.Header>
-                              <Card.Body>
-                                <Card.Text className="occupant-name">
-                                  {resident ? resident.occupantName : 'Vacant'}
-                                </Card.Text>
-                              </Card.Body>
-                            </Card>
+                            <Link to={`/view-resident/${apartment.aptmntId}`} className="text-decoration-none text-dark">
+                              <Card className={`apartment-card ${isOccupied ? 'occupied' : 'vacant'}`}>
+                                <Card.Header className="apartment-header">
+                                  {apartment.aptmntNo}
+                                </Card.Header>
+                                <Card.Body>
+                                  <Card.Text className="occupant-name">
+                                    {resident ? resident.occupantName : 'Vacant'}
+                                  </Card.Text>
+                                </Card.Body>
+                              </Card>
+                            </Link>
                           </Col>
                         );
                       })}

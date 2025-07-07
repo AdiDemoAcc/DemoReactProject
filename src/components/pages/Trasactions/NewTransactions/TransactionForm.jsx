@@ -36,10 +36,10 @@ const TransactionForm = ({
                                                 value={transaction[field.name]}
                                                 onChange={field.name === "buildingId" ? handleBuildingChange : handleChange}
                                                 disabled={field.disabled}
-                                                defaultValue=""
+                                                // defaultValue=""
                                                 required = {field.required}
                                             >
-                                                { field.name !== "transactionType" && (<option value="" disabled>Select {field.label}</option>)   }
+                                                { field.name !== "transactionType" && (<option value="" selected disabled>Select {field.label}</option>)   }
                                                 {field.options.map((option) => (
                                                     <option key={option[field.optionsId]} value={option[field.valueId]}>
                                                         {field.name === "transactionType" ?  option.name === "Cr" ? "Credit Amount" : "Debit Amount" : option.name || option.buildingName || option.aptmntNo || option.accntNo}
