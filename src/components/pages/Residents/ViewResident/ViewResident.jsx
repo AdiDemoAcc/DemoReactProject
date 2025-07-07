@@ -1,8 +1,12 @@
+// ViewResident.jsx
 import React, { useEffect, useState } from 'react';
 import ResidentService from '../../../service/ResidentService';
 import { useParams } from 'react-router-dom';
 import { Card, Col, Row, Table } from 'react-bootstrap';
 import '../../../css/ViewResident.css'; 
+
+const formatCurrency = (amount) =>
+  new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(amount);
 
 const ViewResident = () => {
     const { aptmntId } = useParams();
@@ -16,17 +20,18 @@ const ViewResident = () => {
         const fetchResident = async () => {
             const user = JSON.parse(localStorage.getItem("user"));
             const reqObj = {
-                "username": user.username,
-                "roleName": user.roleName,
-                "aptmntId": aptmntId
+                username: user.username,
+                roleName: user.roleName,
+                aptmntId: aptmntId
             };
             const response = await ResidentService.getResidentData(reqObj);
+            console.log("Response: ",response);
+            
             if (response?.respObject) {
                 const { aptmntData, occpntData, txnRecData } = response.respObject;
-                
                 setApartment(aptmntData);
-                setOccupant(occpntData?.[0]); // Assuming only one current occupant
-                
+                setOccupant(occpntData?.[0]);
+
                 const now = new Date();
                 const currentMonth = now.getMonth() + 1;
                 const currentYear = now.getFullYear();
@@ -52,13 +57,13 @@ const ViewResident = () => {
     }, [aptmntId]);
 
     return (
-        <div className="container custom-view-resident-container mt-2   ">
+        <div className="container custom-view-resident-container mt-2">
             <Row>
                 <Col>
                     {apartment && (
                         <Card className="custom-view-resident-card">
                             <Card.Header className='text-center card-custom-view-resident-header'>
-                                <h4>Apartment Details</h4>
+                                <h4>🏠 Apartment Details</h4>
                             </Card.Header>
                             <Card.Body>
                                 <Table className="table-view-resident-custom">
@@ -81,7 +86,7 @@ const ViewResident = () => {
                     {occupant && (
                         <Card className="custom-view-resident-card">
                             <Card.Header className='text-center card-custom-view-resident-header'>
-                                <h4>Current Resident</h4>
+                                <h4>👤 Current Resident</h4>
                             </Card.Header>
                             <Card.Body>
                                 <Table className="table-view-resident-custom">
@@ -110,17 +115,15 @@ const ViewResident = () => {
                 </Col>
             </Row>
 
-            {/* Current Transactions */}
             <Card className="custom-view-resident-card mt-3">
                 <Card.Header className='text-center card-custom-view-resident-header'>
-                    <h4>Current Month Transactions</h4>
+                    <h4>💰 Current Month Transactions</h4>
                 </Card.Header>
                 <Card.Body>
                     <Table className="table-view-resident-custom text-center">
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                {/* <th>Type</th> */}
                                 <th>Amount</th>
                                 <th>GL Account No</th>
                                 <th>Category</th>
@@ -132,8 +135,7 @@ const ViewResident = () => {
                                 currentMonthTransactions.map(txn => (
                                     <tr key={txn.transactionId}>
                                         <td>{new Date(txn.transactionDate).toLocaleDateString()}</td>
-                                        {/* <td>{txn.transactionType}</td> */}
-                                        <td>{txn.transactionAmnt.toFixed(2)}</td>
+                                        <td>{formatCurrency(txn.transactionAmnt)}</td>
                                         <td>{txn.glAccount.accntNo}</td>
                                         <td>{txn.transactionCategory}</td>
                                         <td>{txn.makerRmrks}</td>
@@ -141,7 +143,7 @@ const ViewResident = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="6" className="text-center">No transactions found</td>
+                                    <td colSpan="5" className="text-center">No transactions found</td>
                                 </tr>
                             )}
                         </tbody>
@@ -149,17 +151,15 @@ const ViewResident = () => {
                 </Card.Body>
             </Card>
 
-            {/* Past Transactions */}
             <Card className="custom-view-resident-card mt-3">
                 <Card.Header className='text-center card-custom-view-resident-header'>
-                    <h4>Past Transactions</h4>
+                    <h4>📁 Past Transactions</h4>
                 </Card.Header>
                 <Card.Body>
                     <Table className="table-view-resident-custom text-center">
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                {/* <th>Type</th> */}
                                 <th>Amount</th>
                                 <th>GL Account No</th>
                                 <th>Category</th>
@@ -171,8 +171,7 @@ const ViewResident = () => {
                                 pastTransactions.map(txn => (
                                     <tr key={txn.transactionId}>
                                         <td>{new Date(txn.transactionDate).toLocaleDateString()}</td>
-                                        {/* <td>{txn.transactionType}</td> */}
-                                        <td>{txn.transactionAmnt.toFixed(2)}</td>
+                                        <td>{formatCurrency(txn.transactionAmnt)}</td>
                                         <td>{txn.glAccount.accntNo}</td>
                                         <td>{txn.transactionCategory}</td>
                                         <td>{txn.makerRmrks}</td>
