@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TransactionService from '../../../service/TransactionService';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import '../../../css/ReconcileTxn.css'
+import { useNavigate } from 'react-router-dom';
 
 
 const ReconcileTxn = () => {
@@ -9,6 +10,8 @@ const ReconcileTxn = () => {
     const [unauthTxnList, setUnauthTxnList] = useState([]);
 
     const token = localStorage.getItem("token");
+    
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,6 +36,21 @@ const ReconcileTxn = () => {
         }
     }, [])
 
+    const viewTransactionHandler = async (transactionId) => {
+        try {
+            const response = await TransactionService.getTransactionFromTransactionId(transactionId);
+            // console.log("Response: ",response);
+            const { respObject, errorCd, errorMsg } = response;
+            if (errorCd === "REQUEST_SUCCESS") {
+                navigate("/txn-details", { state : { txnDetails : respObject } });
+            } else {
+                console.error(errorMsg || "An error occurred");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+    
     return (
         <div>
             <Container className='display-unauth-txn-custom-container'>
@@ -83,7 +101,7 @@ const ReconcileTxn = () => {
                                         <td>{txn.makerCd}</td>
                                         <td>{txn.makerRmrks}</td>
                                         <td>
-                                            <Button variant='outline-primary' >View More</Button>
+                                            <Button variant='outline-primary' onClick={() => viewTransactionHandler(txn.transactionId)}>View More</Button>
                                         </td>
                                     </tr>
                                 ))

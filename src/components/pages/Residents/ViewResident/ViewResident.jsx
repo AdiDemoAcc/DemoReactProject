@@ -1,12 +1,12 @@
 // ViewResident.jsx
 import React, { useEffect, useState } from 'react';
 import ResidentService from '../../../service/ResidentService';
-import { useParams } from 'react-router-dom';
-import { Card, Col, Row, Table } from 'react-bootstrap';
-import '../../../css/ViewResident.css'; 
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Card, Col, Row, Table } from 'react-bootstrap';
+import '../../../css/ViewResident.css';
 
 const formatCurrency = (amount) =>
-  new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(amount);
+    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(amount);
 
 const ViewResident = () => {
     const { aptmntId } = useParams();
@@ -14,6 +14,7 @@ const ViewResident = () => {
     const [occupant, setOccupant] = useState(null);
     const [currentMonthTransactions, setCurrentMonthTransactions] = useState([]);
     const [pastTransactions, setPastTransactions] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -25,8 +26,8 @@ const ViewResident = () => {
                 aptmntId: aptmntId
             };
             const response = await ResidentService.getResidentData(reqObj);
-            console.log("Response: ",response);
-            
+            console.log("Response: ", response);
+
             if (response?.respObject) {
                 const { aptmntData, occpntData, txnRecData } = response.respObject;
                 setApartment(aptmntData);
@@ -58,6 +59,8 @@ const ViewResident = () => {
 
     return (
         <div className="container custom-view-resident-container mt-2">
+            <Button variant="secondary" onClick={() => navigate(-1)} className="resident-details-back-btn">← Back</Button>
+
             <Row>
                 <Col>
                     {apartment && (
@@ -82,6 +85,7 @@ const ViewResident = () => {
                         </Card>
                     )}
                 </Col>
+
                 <Col>
                     {occupant && (
                         <Card className="custom-view-resident-card">
@@ -101,11 +105,11 @@ const ViewResident = () => {
                                         </tr>
                                         <tr>
                                             <th>Lease Start</th>
-                                            <td>{new Date(occupant.leaseStartDate).toLocaleDateString()}</td>
+                                            <td>{occupant?.leaseEndDate ? new Date(occupant.leaseStartDate).toLocaleDateString() : "NA"}</td>
                                         </tr>
                                         <tr>
                                             <th>Lease End</th>
-                                            <td>{new Date(occupant.leaseEndDate).toLocaleDateString()}</td>
+                                            <td>{occupant?.leaseEndDate ? new Date(occupant.leaseEndDate).toLocaleDateString() : "NA"}</td>
                                         </tr>
                                     </tbody>
                                 </Table>
@@ -120,34 +124,36 @@ const ViewResident = () => {
                     <h4>💰 Current Month Transactions</h4>
                 </Card.Header>
                 <Card.Body>
-                    <Table className="table-view-resident-custom text-center">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Amount</th>
-                                <th>GL Account No</th>
-                                <th>Category</th>
-                                <th>Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentMonthTransactions.length > 0 ? (
-                                currentMonthTransactions.map(txn => (
-                                    <tr key={txn.transactionId}>
-                                        <td>{new Date(txn.transactionDate).toLocaleDateString()}</td>
-                                        <td>{formatCurrency(txn.transactionAmnt)}</td>
-                                        <td>{txn.glAccount.accntNo}</td>
-                                        <td>{txn.transactionCategory}</td>
-                                        <td>{txn.makerRmrks}</td>
-                                    </tr>
-                                ))
-                            ) : (
+                    <div className='custom-view-resident-scrollable-table'>
+                        <Table className="table-view-resident-custom text-center">
+                            <thead>
                                 <tr>
-                                    <td colSpan="5" className="text-center">No transactions found</td>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>GL Account No</th>
+                                    <th>Category</th>
+                                    <th>Remarks</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </Table>
+                            </thead>
+                            <tbody>
+                                {currentMonthTransactions.length > 0 ? (
+                                    currentMonthTransactions.map(txn => (
+                                        <tr key={txn.transactionId}>
+                                            <td>{new Date(txn.transactionDate).toLocaleDateString()}</td>
+                                            <td>{formatCurrency(txn.transactionAmnt)}</td>
+                                            <td>{txn.glAccount.accntNo}</td>
+                                            <td>{txn.transactionCategory}</td>
+                                            <td>{txn.makerRmrks}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="5" className="text-center">No transactions found</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </Table>
+                    </div>
                 </Card.Body>
             </Card>
 
@@ -156,34 +162,36 @@ const ViewResident = () => {
                     <h4>📁 Past Transactions</h4>
                 </Card.Header>
                 <Card.Body>
-                    <Table className="table-view-resident-custom text-center">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Amount</th>
-                                <th>GL Account No</th>
-                                <th>Category</th>
-                                <th>Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody className='custom-view-resident-past-txn-table'>
-                            {pastTransactions.length > 0 ? (
-                                pastTransactions.map(txn => (
-                                    <tr key={txn.transactionId}>
-                                        <td>{new Date(txn.transactionDate).toLocaleDateString()}</td>
-                                        <td>{formatCurrency(txn.transactionAmnt)}</td>
-                                        <td>{txn.glAccount.accntNo}</td>
-                                        <td>{txn.transactionCategory}</td>
-                                        <td>{txn.makerRmrks}</td>
-                                    </tr>
-                                ))
-                            ) : (
+                    <div className='custom-view-resident-scrollable-table'>
+                        <Table className="table-view-resident-custom text-center">
+                            <thead>
                                 <tr>
-                                    <td colSpan="5" className="text-center">No past transactions found</td>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>GL Account No</th>
+                                    <th>Category</th>
+                                    <th>Remarks</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </Table>
+                            </thead>
+                            <tbody>
+                                {pastTransactions.length > 0 ? (
+                                    pastTransactions.map(txn => (
+                                        <tr key={txn.transactionId}>
+                                            <td>{new Date(txn.transactionDate).toLocaleDateString()}</td>
+                                            <td>{formatCurrency(txn.transactionAmnt)}</td>
+                                            <td>{txn.glAccount.accntNo}</td>
+                                            <td>{txn.transactionCategory}</td>
+                                            <td>{txn.makerRmrks}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="5" className="text-center">No past transactions found</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </Table>
+                    </div>
                 </Card.Body>
             </Card>
         </div>

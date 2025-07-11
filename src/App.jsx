@@ -9,6 +9,7 @@ import DisplayResidents from './components/pages/Residents/DispayResidents/Displ
 import Login from './components/pages/Login/Login'
 import ViewResident from './components/pages/Residents/ViewResident/ViewResident'
 import ReconcileTxn from './components/pages/Trasactions/ReconcileTrnsctn/ReconcileTxn'
+import TransactionDetails from './components/pages/Trasactions/ReconcileTrnsctn/TransactionDetails'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path='/add-resident' element={<AddResident />} />
         <Route path='/view-resident/:aptmntId' element={<ViewResident />}/>
         <Route path='/reconcile-txn' element={<ReconcileTxn />} />
+        <Route path='/txn-details' element={<TransactionDetails />} />
       </Route>
     </Routes>
   )

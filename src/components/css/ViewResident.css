@@ -14,7 +14,6 @@
     font-weight: bold;
 }
 
-
 .table-view-resident-custom {
     border-collapse: separate;
     border-spacing: 0 5px;
@@ -32,6 +31,20 @@
     background-color: rgba(0, 123, 255, 0.1);
 }
 
-.custom-view-resident-past-txn-table {
+/* Scrollable table wrapper for transactions */
+.custom-view-resident-scrollable-table {
+    max-height: 200px;
     overflow-y: auto;
+}
+
+/* Sticky table headers */
+.custom-view-resident-scrollable-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 1;
+}
+
+.resident-details-back-btn {
+    margin-bottom: 20px;
 }

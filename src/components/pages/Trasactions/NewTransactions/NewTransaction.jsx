@@ -16,10 +16,12 @@ const NewTransaction = () => {
     const [filteredApartments, setFilteredApartments] = useState([]);
     const [glAccntOptions , setGlAccntOptions] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedBldngId, setSelectedBldngId] = useState(null);
 
     const [transaction, setTransaction] = useState({
         transactionId: '',
         transactionDate: '',
+        bldngId: '',
         aptmntId: '',
         startDate: '',
         endDate: '',
@@ -46,7 +48,7 @@ const NewTransaction = () => {
             const categoryName = value;
             setSelectedCategory(categoryName);
         }
-
+        
         setTransaction({ ...transaction, [e.target.name]: e.target.value });
     };
 
@@ -134,9 +136,15 @@ const NewTransaction = () => {
     // Handle building selection and filter apartments accordingly
     const handleBuildingChange = (e) => {
         let selectedBuildingId = Number(e.target.value);
+        setSelectedBldngId(selectedBuildingId);        
         // Filter apartments based on selected building
         const filteredApts = apartments.filter(apartment => Number(apartment.bldngId) === Number(selectedBuildingId));
         setFilteredApartments(filteredApts);
+        
+        setTransaction(prev => ({
+            ...prev,
+            bldngId: selectedBuildingId
+        }));
     };
 
     const handleSubmit = async (e) => {

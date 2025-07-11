@@ -84,6 +84,27 @@ class TransactionService {
             throw error.response?.data || {errorMsg : "Something went wrong"};
         }
     }
+    
+    async getTransactionFromTransactionId(transactionId) {
+        try {
+            const token = localStorage.getItem("token");
+            const response = api.post("/T8000/S8008",{"transactionId":transactionId},
+                {
+                    headers: {
+                        "Authorization" : `Bearer ${token}`
+                    }
+                }
+            )
+            .then(response => response.data)
+            .catch(error => {
+                console.error("An error occurred: ",error);
+            })
+            return response;
+        } catch (error) {
+            throw error.response?.data || {errorMsg : "Something went wrong"};
+        }
+        
+    }
 
 }
 
