@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import { Container, Row, Col, Button, Card, ButtonGroup } from 'react-bootstrap';
 import '../../../css/TransactionDetails.css';
 
 const TransactionDetails = () => {
@@ -24,8 +24,8 @@ const TransactionDetails = () => {
                         <div className="txn-details-card-header">Apartment Details</div>
                         <div className="txn-details-card-body">
                             <p><span className="txn-details-label">No:</span> <span className="txn-details-value">{transactionRecord.aptmnt?.aptmntNo || 'N/A'}</span></p>
-                            <p><span className="txn-details-label">Description:</span> <span className="txn-details-value">{transactionRecord.aptmnt?.aptmntDesc}</span></p>
-                            <p><span className="txn-details-label">Floor:</span> <span className="txn-details-value">{transactionRecord.aptmnt?.floorName}</span></p>
+                            <p><span className="txn-details-label">Description:</span> <span className="txn-details-value">{transactionRecord.aptmnt?.aptmntDesc || 'N/A'}</span></p>
+                            <p><span className="txn-details-label">Floor:</span> <span className="txn-details-value">{transactionRecord.aptmnt?.floorName || 'N/A'}</span></p>
                         </div>
                     </Card>
                 </Col>
@@ -76,6 +76,13 @@ const TransactionDetails = () => {
                     <p><span className="txn-details-label">Status:</span> {transactionRecord.authStatus === 1 ? 'Authorized' : transactionRecord.authStatus === 2 ? 'Rejected' :'Pending'}</p>
                 </div>
             </Card>
+            
+            <Row>
+                <ButtonGroup>
+                    <Button variant='outline-success' >Approve</Button>
+                    <Button variant='outline-danger' >Reject</Button>
+                </ButtonGroup>
+            </Row>
         </Container>
     );
 };

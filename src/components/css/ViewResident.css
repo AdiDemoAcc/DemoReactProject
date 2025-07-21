@@ -32,7 +32,7 @@
 }
 
 /* Scrollable table wrapper for transactions */
-.custom-view-resident-scrollable-table {
+.custom-view-resident-scrollable-table { 
     max-height: 200px;
     overflow-y: auto;
 }
