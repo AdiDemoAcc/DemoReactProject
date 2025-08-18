@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TransactionService from '../../../service/TransactionService';
-import { Button, Col, Container, Row, Table, Form } from 'react-bootstrap';
+import { Button, Col, Container, Row, Table, Form, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import '../../../css/ReconcileTxn.css';
 
@@ -48,7 +48,6 @@ const ReconcileTxn = () => {
         }
     };
 
-    // Filter logic
     useEffect(() => {
         let updatedList = unauthTxnList;
 
@@ -80,37 +79,45 @@ const ReconcileTxn = () => {
     return (
         <div>
             <Container className="display-unauth-txn-custom-container">
-                <Row className="display-unauth-txn-custom-header mb-3">
-                    <Col><h2>Transactions Pending Authorization</h2></Col>
-                </Row>
-
+                <Card className='display-unauth-txn-custom-card'>
+                    <Card.Header className='bg-primary'>
+                        <Row className="display-unauth-txn-custom-header text-white text-center">
+                            <Col><h2>TRANSACTIONS PENDING AUTHORIZATION</h2></Col>
+                        </Row>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row className="mb-3">
+                            <Col md={3}>
+                                <Form.Select value={buildingFilter} onChange={(e) => setBuildingFilter(e.target.value)}>
+                                    <option value="">Filter by Building</option>
+                                    {buildingNames.map((bld, idx) => <option key={idx} value={bld}>{bld}</option>)}
+                                </Form.Select>
+                            </Col>
+                            <Col md={3}>
+                                <Form.Select value={txnTypeFilter} onChange={(e) => setTxnTypeFilter(e.target.value)}>
+                                    <option value="">Filter by Type</option>
+                                    <option value="Cr">Credit</option>
+                                    <option value="Db">Debit</option>
+                                </Form.Select>
+                            </Col>
+                            <Col md={3}>
+                                <Form.Control placeholder="Filter by Category" value={categoryFilter}
+                                    onChange={(e) => setCategoryFilter(e.target.value)} />
+                            </Col>
+                            <Col md={3}>
+                                <Form.Control placeholder="Search (Apt No / Category)" value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)} />
+                            </Col>
+                        </Row>
+                    </Card.Body>
+                </Card>
+                
+                
                 {/* Filters */}
-                <Row className="mb-3">
-                    <Col md={3}>
-                        <Form.Select value={buildingFilter} onChange={(e) => setBuildingFilter(e.target.value)}>
-                            <option value="">Filter by Building</option>
-                            {buildingNames.map((bld, idx) => <option key={idx} value={bld}>{bld}</option>)}
-                        </Form.Select>
-                    </Col>
-                    <Col md={3}>
-                        <Form.Select value={txnTypeFilter} onChange={(e) => setTxnTypeFilter(e.target.value)}>
-                            <option value="">Filter by Type</option>
-                            <option value="Cr">Credit</option>
-                            <option value="Db">Debit</option>
-                        </Form.Select>
-                    </Col>
-                    <Col md={3}>
-                        <Form.Control placeholder="Filter by Category" value={categoryFilter}
-                            onChange={(e) => setCategoryFilter(e.target.value)} />
-                    </Col>
-                    <Col md={3}>
-                        <Form.Control placeholder="Search (Apt No / Category)" value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)} />
-                    </Col>
-                </Row>
+                
 
                 <div className="display-unauth-txn-custom-table-wrapper text-center">
-                    <Table striped bordered hover responsive="lg" className="display-unauth-txn-custom-table table-primary">
+                    <Table striped bordered hover responsive="lg" className="display-unauth-txn-custom-table table-primary text-center">
                         <thead className="display-unauth-txn-custom-table-head">
                             <tr>
                                 <th>Building</th>

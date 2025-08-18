@@ -17,3 +17,7 @@
     font-weight: bolder;
     text-align: center;
 }
+
+.display-unauth-txn-custom-card {
+    margin-bottom: 2vh;
+}

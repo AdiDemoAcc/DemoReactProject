@@ -1,21 +1,17 @@
-/* root flex layout */
 .login-layout {
-  min-height: 100vh;            /* full screen */
+  min-height: 100vh;
 }
 
-/* left panel gets a subtle colour so the card pops */
 .left-panel {
-  background: #f5f7fa;          /* light grey-blue */
+  background: #f5f7fa;
 }
 
-/* hero image fills right col */
 .hero-img {
   height: 100%;
   background: url('../images/login-background.jpeg') center/cover no-repeat;
-  filter: brightness(0.7);      /* dim it a little */
+  filter: brightness(0.7);      
 }
 
-/* make the card semi‑transparent with blur (modern “glass” look) */
 .glass {
   background: rgba(255, 255, 255, 0.65) !important;
   backdrop-filter: blur(12px);
@@ -33,7 +29,6 @@
   margin-bottom: 1rem;
 }
 
-/* small aesthetic tweaks */
 .input-group-text {
   background: transparent;
   border-right: 0;
@@ -49,6 +44,6 @@ button {
 }
 
 button:hover {
-  background: #198754;    /* same green but filled */
+  background: #198754;
   color: #fff;
 }
