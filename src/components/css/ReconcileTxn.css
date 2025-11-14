@@ -1,3 +1,8 @@
+.display-unauth-txn-custom-container {
+    max-width: 100%;
+    max-height: 100%;
+}
+
 .display-unauth-txn-custom-table-wrapper {
     max-height: 600px;
     overflow-y: auto;
@@ -12,10 +17,11 @@
 }
 
 .display-unauth-txn-custom-table-head th {
-    background-color: #2e76ea !important;
+    background-color: #706f44 !important;
     color: #fff !important;
     font-weight: bolder;
     text-align: center;
+    justify-content: center;
 }
 
 .display-unauth-txn-custom-card {

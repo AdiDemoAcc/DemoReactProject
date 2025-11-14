@@ -1,0 +1,45 @@
+.ymAccordionWrapper {
+  width: 100%;
+}
+/* Year Dropdown */
+.ymYearDropdown {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+/* Month Grid */
+.ymMonthContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ymMonthBox {
+  width: 60px;
+  padding: 10px;
+  text-align: center;
+  background: #f4f4f4;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  transition: 0.2s;
+}
+
+.ymMonthBox:hover {
+  background: #e6e6e6;
+}
+
+.ymMonthSelected {
+  background: #0d6efd;
+  color: white;
+  border-color: #0a58ca;
+}
+
+.ymSelectedText {
+  margin-top: 10px;
+  font-weight: 600;
+}

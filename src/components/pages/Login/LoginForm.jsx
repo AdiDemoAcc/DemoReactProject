@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Form, Container, Button, Row, Col, InputGroup } from 'react-bootstrap';
+import { Card, Form, Container, Button, Col, InputGroup } from 'react-bootstrap';
 import '../../css/Login2.css';
 import { LockFill, PersonFill } from 'react-bootstrap-icons';
 import LoginService from '../../service/LoginService';
 import { useNavigate } from 'react-router-dom';
 import logo from "../../images/logo.png";
 import loginBg from "../../images/login-background.jpeg";
+import AlertModal from '../../utils/AlertModal';
 
 const LoginForm = () => {
     const [login, setLogin] = useState({
@@ -16,85 +17,82 @@ const LoginForm = () => {
 
     const navigate = useNavigate();
 
-    // Redirect to dashboard if user is already logged in
+    // redirect if already logged in
     useEffect(() => {
         const token = localStorage.getItem("token");
-        if (token) {
-            navigate("/dashboard", { replace: true });
-        }
+        if (token) navigate("/dashboard", { replace: true });
     }, [navigate]);
 
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
-        if (type === 'checkbox') {
-            setLogin((values) => ({ ...values, [name]: checked }))
-        } else {
-            setLogin((values) => ({ ...values, [name]: value }));
+        setLogin((values) => ({
+            ...values,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const [alertData, setAlertData] = useState({
+        show: false,
+        title: "",
+        message: "",
+        variant: "danger",
+        btnMsg: "OK",
+    });
+
+    const showAlert = (title, message, variant = "danger", btnMsg = "OK") => {
+        setAlertData({ show: true, title, message, variant, btnMsg });
+    };
+
+    const handleCloseAlert = () => {
+        setAlertData(prev => ({ ...prev, show: false }));
+
+        if (alertData.title === "Success" && alertData.message === "Login Successful!") {
+            navigate("/dashboard");
         }
     };
 
-    /* const userLoginObject = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(login)
-    } */
-
     const loginSubmitAction = async (event) => {
         event.preventDefault();
-
-        // Clear old session data
-        // localStorage.removeItem('token');
-        // localStorage.removeItem('user');
-        // localStorage.removeItem("sessionId");
-        // localStorage.removeItem("menuItemList");
-        // localStorage.removeItem("menuList");
-
         localStorage.clear();
-        console.log("Removing localstorage data Login - Line 52");
+
         try {
             const response = await LoginService.loginService(login);
             const { respObject, errorMsg, errorCd } = response;
 
             if (errorCd === "USER_AUTHENTICATED") {
                 const user = respObject.user;
-                let roleId = user.roleId;
                 let token = respObject.token;
                 let sessionId = respObject.sessionId;
                 let expiresIn = 86400;
                 let expirationTime = new Date().getTime() + expiresIn * 1000;
 
-                // Store user session data
                 localStorage.setItem("token", token);
                 localStorage.setItem("user", JSON.stringify(user));
                 localStorage.setItem("sessionId", sessionId);
                 localStorage.setItem("expirationTime", expirationTime);
-                const menuResponse = await LoginService.menuMapService(roleId);
-                const { respObject: menuData, errorMsg: menuErrorMsg, errorCd: menuErrorCd } = menuResponse;
-                console.log("Menu Response: ", menuData);
+
+                const menuResponse = await LoginService.menuMapService(user.roleId);
+                const { respObject: menuData, errorCd: menuErrorCd } = menuResponse;
 
                 if (menuErrorCd === "REQUEST_SUCCESS") {
                     localStorage.setItem("menuItemList", JSON.stringify(menuData.menuItemMstList));
                     localStorage.setItem("menuList", JSON.stringify(menuData.menuMstList));
-
-                    // Redirect to dashboard
-                    navigate("/dashboard");
+                    showAlert("Success", "Login Successful!", "success", "OK");
                 } else {
-                    alert("Something went wrong.");
-                    console.error("Error: ", menuErrorMsg);
+                    showAlert("Menu Error", "Failed to load menu. Please try again.");
                 }
 
             } else {
-                alert(errorMsg || "Login Failed");
+                showAlert("Login Failed", errorMsg || "Invalid credentials.");
             }
         } catch (error) {
-            alert(error.errorMsg || "Something went wrong");
             console.error("Login Failed: ", error);
+            showAlert("Error", error?.errorMsg || "Something went wrong. Please try again later.");
         }
     };
 
     return (
         <Container fluid className="login-layout d-flex p-0">
-            {/* Left panel */}
             <Col md={6} className="left-panel d-flex align-items-center justify-content-center">
                 <Card className="login-card glass">
                     <Card.Header className="border-0 bg-transparent text-center">
@@ -143,10 +141,18 @@ const LoginForm = () => {
                 </Card>
             </Col>
 
-            {/* Right hero image (hidden < md) */}
             <Col md={6} className="p-0 d-none d-md-block overflow-hidden">
-                <div className="hero-img" />
+                <div className="hero-img" style={{ backgroundImage: `url(${loginBg})` }} />
             </Col>
+
+            <AlertModal
+                show={alertData.show}
+                title={alertData.title}
+                message={alertData.message}
+                variant={alertData.variant}
+                btnMsg={alertData.btnMsg}
+                onClose={handleCloseAlert}
+            />
         </Container>
     );
 };

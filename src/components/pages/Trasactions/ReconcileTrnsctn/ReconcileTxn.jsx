@@ -80,31 +80,31 @@ const ReconcileTxn = () => {
         <div>
             <Container className="display-unauth-txn-custom-container">
                 <Card className='display-unauth-txn-custom-card'>
-                    <Card.Header className='bg-primary'>
+                    <Card.Header className='bg-warning'>
                         <Row className="display-unauth-txn-custom-header text-white text-center">
                             <Col><h2>TRANSACTIONS PENDING AUTHORIZATION</h2></Col>
                         </Row>
                     </Card.Header>
                     <Card.Body>
                         <Row className="mb-3">
-                            <Col md={3}>
+                            <Col md={4}>
                                 <Form.Select value={buildingFilter} onChange={(e) => setBuildingFilter(e.target.value)}>
                                     <option value="">Filter by Building</option>
                                     {buildingNames.map((bld, idx) => <option key={idx} value={bld}>{bld}</option>)}
                                 </Form.Select>
                             </Col>
-                            <Col md={3}>
+                            <Col md={4}>
                                 <Form.Select value={txnTypeFilter} onChange={(e) => setTxnTypeFilter(e.target.value)}>
                                     <option value="">Filter by Type</option>
                                     <option value="Cr">Credit</option>
                                     <option value="Db">Debit</option>
                                 </Form.Select>
                             </Col>
-                            <Col md={3}>
+                            {/* <Col md={3}>
                                 <Form.Control placeholder="Filter by Category" value={categoryFilter}
                                     onChange={(e) => setCategoryFilter(e.target.value)} />
-                            </Col>
-                            <Col md={3}>
+                            </Col> */}
+                            <Col md={4}>
                                 <Form.Control placeholder="Search (Apt No / Category)" value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)} />
                             </Col>
@@ -117,7 +117,7 @@ const ReconcileTxn = () => {
                 
 
                 <div className="display-unauth-txn-custom-table-wrapper text-center">
-                    <Table striped bordered hover responsive="lg" className="display-unauth-txn-custom-table table-primary text-center">
+                    <Table striped bordered hover responsive="lg" className="display-unauth-txn-custom-table text-center">
                         <thead className="display-unauth-txn-custom-table-head">
                             <tr>
                                 <th>Building</th>
