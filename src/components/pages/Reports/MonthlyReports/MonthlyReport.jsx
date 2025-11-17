@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ResidentService from '../../../service/ResidentService';
 import YearMonthAccordion from '../PageComponents/YearMonthAccordion';
+import '../../../css/MonthlyReport.css'
+import ReportService from '../../../service/ReportService';
 
 const MonthlyReport = () => {
 
@@ -12,6 +14,13 @@ const MonthlyReport = () => {
 
   const [selectedBuilding, setSelectedBuilding] = useState("");
   const [filteredApartments, setFilteredApartments] = useState([]);
+  const [reportData, setReportData ] = useState({
+    aptmntId : '',
+    txnMonth : '',
+    txnYear : ''
+  })
+  
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -44,6 +53,39 @@ const MonthlyReport = () => {
       setFilteredApartments([]);
     }
   }
+  
+  const handleDateSelect = (year, month) => {
+    setReportData((prevData) => ({
+      ...prevData,
+      txnMonth : month,
+      txnYear : year
+    }))
+  }
+  
+  
+  const handleApartmentChange = (id) => {
+    setReportData((prevData) => ({
+      ...prevData,
+      aptmntId : parseInt(id)
+    }))
+  }
+  
+  const handleGenerateReport = async () => {
+    try {
+      console.log("Report request data: ",reportData);
+      const response = await ReportService.generateMonthlyReport(reportData);
+      console.log("response: ",response);
+      
+      if (response) {
+          const fileBlob = new Blob([response],{type : 'application/pdf'});
+          const fileUrl = URL.createObjectURL(fileBlob);
+          setPreviewUrl(fileUrl);
+          console.log("Preview URL created:", fileUrl);
+      }
+    } catch (error) {
+      console.error("Error generating report", err);
+    }
+  }
 
   return (
     <div>
@@ -72,10 +114,10 @@ const MonthlyReport = () => {
                 {/* Apartment Dropdown Filter */}
                 <Form.Group className='mb-3'>
                   <Form.Label>Apartment</Form.Label>
-                  <Form.Select disabled={!selectedBuilding} >
+                  <Form.Select disabled={!selectedBuilding} onChange={(e) => handleApartmentChange(e.target.value)}>
                     <option value="">---Select Apartment---</option>
                     {filteredApartments.map(apt => (
-                      <option key={apt.aptmntId} value={apt.aptmntId}>
+                      <option key={apt.aptmntId} value={apt.aptmntId} >
                         {apt.aptmntNo} ({apt.floorName})
                       </option>
                     ))}
@@ -91,11 +133,29 @@ const MonthlyReport = () => {
                     <input className='form-control' type={'Date'} name='month'/>
               </Col> */}
               <Col>
-                <YearMonthAccordion startYear={1961} />
+                <Form.Label >Select Year and Month</Form.Label>
+                <YearMonthAccordion startYear={1961} onChange={handleDateSelect} />
               </Col>
+            </Row>
+            <Row className='generate-report-btn-row'>
+              <Button className='btn btn-dark generate-report-btn' onClick={handleGenerateReport}>Generate Report</Button>
             </Row>
           </Card.Body>
         </Card>
+        
+        {previewUrl && (
+          <div className='mt-4'>
+            <h5>Preview</h5>
+            <iframe 
+              src={previewUrl}
+              width='100%'
+              height='600px'
+              title='Bill Preview'
+              style={{border: '1px solid #ccc'}}
+            />
+          </div>
+        )}
+        
       </Container>
     </div>
   )

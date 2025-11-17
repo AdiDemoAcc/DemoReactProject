@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../../../css/YearMonthAccordion.css";
-import { Form } from "react-bootstrap";
 
-const YearMonthAccordion = ({ startYear = 1969 }) => {
-
+const YearMonthAccordion = ({ startYear = 1969, onChange }) => {
   const currentYear = new Date().getFullYear();
 
   const years = Array.from(
@@ -11,57 +9,90 @@ const YearMonthAccordion = ({ startYear = 1969 }) => {
     (_, i) => currentYear - i
   );
 
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
 
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selected, setSelected] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [expandedYear, setExpandedYear] = useState(null);
+  const [selected, setSelected] = useState({ year: "", monthIndex : null });
 
-  const handleMonthSelect = (year, index) => {
-    setSelected({ year, monthIndex: index });
+  const wrapperRef = useRef(null);
+
+  const handleOutsideClick = (e) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+      setOpen(false);
+      setExpandedYear(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  const handleYearClick = (year) => {
+    setExpandedYear(expandedYear === year ? null : year);
+  };
+
+  const handleMonthSelect = (year, monthIndex) => {
+    setSelected({ year, monthIndex });
+    if (onChange) {
+      onChange(year,monthIndex);
+    }
+    setOpen(false);
+    setExpandedYear(null);
   };
 
   return (
-    <div className="ymAccordionWrapper">
-      <Form.Label className="ymLabel">Select Month & Year</Form.Label>
-
-      {/* Year Dropdown */}
-      <select
-        className="ymYearDropdown"
-        value={selectedYear}
-        onChange={(e) => {
-          setSelectedYear(e.target.value);
-          setSelected(null);
-        }}
+    <div className="ymInputWrapper" ref={wrapperRef}>
+      {/* SINGLE INPUT FIELD */}
+      <div
+        className="ymInputBox"
+        onClick={() => setOpen(!open)}
       >
-        <option value="">Select Year</option>
-        {years.map((yr) => (
-          <option key={yr} value={yr}>{yr}</option>
-        ))}
-      </select>
+        {selected.year != '' && selected.monthIndex != null
+          ? `${selected.year} - ${months[selected.monthIndex]}`
+          : "Select Month & Year"}
+      </div>
 
-      {/* Months Box Grid */}
-      {selectedYear && (
-        <div className="ymMonthContainer">
-          {months.map((m, index) => (
-            <div
-              key={index}
-              className={`ymMonthBox ${
-                selected?.year == selectedYear && selected?.monthIndex === index
-                  ? "ymMonthSelected"
-                  : ""
-              }`}
-              onClick={() => handleMonthSelect(selectedYear, index)}
-            >
-              {m}
+      {/* DROPDOWN */}
+      {open && (
+        <div className="ymDropdown">
+          {years.map((yr) => (
+            <div key={yr} className="ymYearSection">
+              {/* YEAR ROW */}
+              <div
+                className="ymYearRow"
+                onClick={() => handleYearClick(yr)}
+              >
+                {yr}
+                <span className="ymArrow">
+                  {expandedYear === yr ? "▲" : "▼"}
+                </span>
+              </div>
+
+              {/* MONTHS UNDER EXPANDED YEAR */}
+              {expandedYear === yr && (
+                <div className="ymMonthContainer">
+                  {months.map((m,index) => (
+                    <div
+                      key={index}
+                      className={`ymMonthBox ${
+                        selected.year === yr && selected.monthIndex === index
+                          ? "ymMonthSelected"
+                          : ""
+                      }`}
+                      onClick={() => handleMonthSelect(yr, index)}
+                    >
+                      {m}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
-        </div>
-      )}
-
-      {selected && (
-        <div className="ymSelectedText">
-          Selected: {selected.year} - {selected.monthIndex}
         </div>
       )}
     </div>

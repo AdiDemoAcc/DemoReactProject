@@ -17,7 +17,6 @@ const LoginForm = () => {
 
     const navigate = useNavigate();
 
-    // redirect if already logged in
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) navigate("/dashboard", { replace: true });
