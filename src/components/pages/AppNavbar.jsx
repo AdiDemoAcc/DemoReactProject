@@ -4,6 +4,7 @@ import { List } from 'react-bootstrap-icons'
 import '../css/AppNavbar.css'
 import LoginService from '../service/LoginService'
 import { replace, useNavigate } from 'react-router-dom'
+import titleLogo from '../images/Title-logo.jpg'
 
 const AppNavbar = ({ isCollapsed, setIsCollapsed }) => {
 
@@ -61,7 +62,9 @@ const AppNavbar = ({ isCollapsed, setIsCollapsed }) => {
                 />
               </Button>
             <Container>  
-                <Navbar.Brand href='/dashnoard' style={{color: 'white', fontWeight: 'bold' }}>Ledgerly</Navbar.Brand>
+                <Navbar.Brand href='/dashboard' style={{color: 'white', fontWeight: 'bold' }} className='text-center'>
+                    <img src={titleLogo} alt='Ledgerly Logo' width='200' height='40' className='d-inline-block align-top me-2'/>
+                </Navbar.Brand>
             </Container>
             <Button id='customNavbarLogoutButton' className='me-2 custom-navbar-logout-button' onClick={(e) => logoutUser(e)}>Logout</Button>
         </Navbar>

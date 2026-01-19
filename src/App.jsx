@@ -11,6 +11,7 @@ import ViewResident from './components/pages/Residents/ViewResident/ViewResident
 import ReconcileTxn from './components/pages/Trasactions/ReconcileTrnsctn/ReconcileTxn'
 import TransactionDetails from './components/pages/Trasactions/ReconcileTrnsctn/TransactionDetails'
 import MonthlyReport from './components/pages/Reports/MonthlyReports/MonthlyReport'
+import YearlyReports from './components/pages/Reports/YearlyReports/YearlyReports'
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/reconcile-txn' element={<ReconcileTxn />} />
         <Route path='/txn-details' element={<TransactionDetails />} />
         <Route path='/reports/monthly-report' element={<MonthlyReport />} />
+        <Route path='/reports/annual-report' element={<YearlyReports />} />
       </Route>
     </Routes>
   )

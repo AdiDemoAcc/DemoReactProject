@@ -10,7 +10,7 @@ const MenuRoutes = {
     402: "/new-payment",
     403: "/reconcile-txn",
     501: "/reports/monthly-report",
-    502: "/dashboard",
+    502: "/reports/annual-report",
     503: "/dashboard",
   };
   
